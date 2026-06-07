@@ -1,0 +1,192 @@
+body {
+  overflow-x: hidden;
+}
+
+.page-shell {
+  opacity: 0;
+  transform: translateY(18px) scale(0.992);
+  transition: opacity 0.42s ease, transform 0.42s cubic-bezier(.22,1,.36,1);
+}
+
+body.is-page-ready .page-shell {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+body.is-page-exiting .page-shell {
+  opacity: 0;
+  transform: translateY(20px) scale(0.988);
+}
+
+.topbar,
+.page-header,
+.dashboard-grid,
+.analytics-grid-top,
+.analytics-grid-bottom,
+.groups-stack,
+.list-stack,
+.profile-layout,
+.profile-bottom-grid {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(.22,1,.36,1);
+}
+
+body.is-page-ready .topbar,
+body.is-page-ready .page-header,
+body.is-page-ready .dashboard-grid,
+body.is-page-ready .analytics-grid-top,
+body.is-page-ready .analytics-grid-bottom,
+body.is-page-ready .groups-stack,
+body.is-page-ready .list-stack,
+body.is-page-ready .profile-layout,
+body.is-page-ready .profile-bottom-grid {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+body.is-page-ready .page-header {
+  transition-delay: 0.04s;
+}
+
+body.is-page-ready .dashboard-grid,
+body.is-page-ready .analytics-grid-top,
+body.is-page-ready .profile-layout {
+  transition-delay: 0.08s;
+}
+
+body.is-page-ready .analytics-grid-bottom,
+body.is-page-ready .groups-stack,
+body.is-page-ready .list-stack,
+body.is-page-ready .profile-bottom-grid {
+  transition-delay: 0.12s;
+}
+
+.modal-backdrop {
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+.modal-backdrop.is-open {
+  opacity: 1;
+}
+
+.modal-card {
+  transform: translateY(22px) scale(0.96);
+  opacity: 0;
+  transition: transform 0.28s cubic-bezier(.22,1,.36,1), opacity 0.28s ease;
+}
+
+.modal-backdrop.is-open .modal-card {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.bar-expense {
+  position: relative;
+  height: var(--target-height, 0%);
+  opacity: 0.35;
+}
+
+body.is-page-ready .bar-expense {
+  animation: growExpenseBar 0.82s cubic-bezier(.22,1,.36,1) forwards;
+  animation-delay: var(--bar-delay, 0ms);
+}
+
+.ring-chart {
+  transform: scale(0.05);
+  opacity: 0;
+  filter: blur(10px);
+  transform-origin: center center;
+}
+
+body.is-page-ready .ring-chart {
+  animation: revealRing 0.95s cubic-bezier(.22,1,.36,1) 0.18s forwards;
+}
+
+.legend-item {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+body.is-page-ready .legend-item {
+  animation: legendIn 0.45s ease forwards;
+}
+
+.legend-item:nth-child(1) {
+  animation-delay: 0.42s;
+}
+
+.legend-item:nth-child(2) {
+  animation-delay: 0.50s;
+}
+
+.legend-item:nth-child(3) {
+  animation-delay: 0.58s;
+}
+
+.legend-item:nth-child(4) {
+  animation-delay: 0.66s;
+}
+
+.legend-item:nth-child(5) {
+  animation-delay: 0.74s;
+}
+
+@keyframes growExpenseBar {
+  from {
+    height: 0;
+    opacity: 0.45;
+  }
+
+  to {
+    height: var(--target-height);
+    opacity: 1;
+  }
+
+}
+
+@keyframes revealRing {
+  0% {
+    transform: scale(0.05);
+    opacity: 0;
+    filter: blur(10px);
+  }
+
+  65% {
+    transform: scale(1.06);
+    opacity: 1;
+    filter: blur(0);
+  }
+
+  100% {
+    transform: scale(1);
+    opacity: 1;
+    filter: blur(0);
+  }
+
+}
+
+@keyframes legendIn {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-shell, .topbar, .page-header, .dashboard-grid, .analytics-grid-top, .analytics-grid-bottom, .groups-stack, .list-stack, .profile-layout, .profile-bottom-grid, .modal-backdrop, .modal-card, .bar, .ring-chart, .legend-item {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+
+}

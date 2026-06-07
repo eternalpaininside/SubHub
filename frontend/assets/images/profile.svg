@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title>Profile Avatar</title>
+  <desc>Flat modern profile avatar with circular background.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#dfe7f2"/>
+      <stop offset="100%" stop-color="#b8c9dd"/>
+    </linearGradient>
+    <linearGradient id="shirt" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4f6d8c"/>
+      <stop offset="100%" stop-color="#2f4358"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1024" height="1024" rx="220" fill="url(#bg)"/>
+  <circle cx="512" cy="512" r="420" fill="#eef3f8"/>
+
+  <path d="M250 826c22-126 131-216 262-216s240 90 262 216" fill="url(#shirt)"/>
+  <rect x="456" y="510" width="112" height="90" rx="34" fill="#d8a27e"/>
+  <ellipse cx="512" cy="372" rx="168" ry="188" fill="#e4b08c"/>
+  <ellipse cx="349" cy="387" rx="24" ry="42" fill="#dca784"/>
+  <ellipse cx="675" cy="387" rx="24" ry="42" fill="#dca784"/>
+
+  <path d="M350 379c0-129 72-219 175-219 89 0 152 54 174 146 10 40 8 88-2 124-8-18-22-34-43-44-42-21-77-4-113-22-36-18-42-58-41-79-23 35-59 53-94 69-26 12-48 33-56 60z" fill="#2d2a2f"/>
+  <path d="M371 256c28-56 83-96 154-96 85 0 151 58 172 145-25-22-58-35-103-33-66 3-132 7-223-16z" fill="#3a353c" opacity=".88"/>
+
+  <ellipse cx="445" cy="385" rx="14" ry="10" fill="#2d2a2f"/>
+  <ellipse cx="579" cy="385" rx="14" ry="10" fill="#2d2a2f"/>
+
+  <path d="M414 350c18-9 42-12 62-5" stroke="#2d2a2f" stroke-width="10" stroke-linecap="round" fill="none"/>
+  <path d="M548 345c19-7 44-5 62 6" stroke="#2d2a2f" stroke-width="10" stroke-linecap="round" fill="none"/>
+
+  <path d="M512 400c-8 26-10 49 6 66" stroke="#b67f5f" stroke-width="8" stroke-linecap="round" fill="none"/>
+  <path d="M462 471c28 19 71 19 99 0" stroke="#915c4f" stroke-width="9" stroke-linecap="round" fill="none"/>
+
+  <circle cx="360" cy="280" r="70" fill="#ffffff" opacity=".18"/>
+</svg>
