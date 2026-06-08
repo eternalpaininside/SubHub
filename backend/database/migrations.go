@@ -151,20 +151,16 @@ func normalizePaymentHistoryTable(db *sql.DB) {
 		return
 	}
 
-	if _, err := db.Exec("ALTER TABLE payment_history RENAME TO payment_history_legacy"); err != nil {
-		log.Fatal(err)
-	}
-
 	createPaymentHistoryTable(db)
 
 	if _, err := db.Exec(`
 INSERT INTO payment_history (id, user_id, subscription_id, amount, paid_at, created_at)
 SELECT id, user_id, subscription_id, amount, paid_at, COALESCE(created_at, CURRENT_TIMESTAMP)
-FROM payment_history_legacy`); err != nil {
+FROM payment_history`); err != nil {
 		log.Fatal(err)
 	}
 
-	if _, err := db.Exec("DROP TABLE payment_history_legacy"); err != nil {
+	if _, err := db.Exec("DROP TABLE payment_history"); err != nil {
 		log.Fatal(err)
 	}
 }
@@ -277,7 +273,12 @@ func hasColumn(db *sql.DB, tableName string, columnName string) bool {
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer rows.Close()
+	defer func() {
+		err := rows.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	for rows.Next() {
 		var (
@@ -309,7 +310,8 @@ func hasColumn(db *sql.DB, tableName string, columnName string) bool {
 
 func tableExists(db *sql.DB, tableName string) bool {
 	var count int
-	if err := db.QueryRow("SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = ?",
+	if err := db.QueryRow(
+		"SELECT COUNT(*) FROM sqlite_master WHERE type = 'table' AND name = ?",
 		tableName).Scan(&count); err != nil {
 		log.Fatal(err)
 	}

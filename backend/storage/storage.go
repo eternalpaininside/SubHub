@@ -4,13 +4,15 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"log"
 	"regexp"
 	"strings"
 	"subhub-backend/structs"
 	"time"
 )
 
-func GetSubscriptions(db *sql.DB, userID int64, category string) ([]structs.Subscription, error) {
+func GetSubscriptions(db *sql.DB, userID int64,
+	category string) ([]structs.Subscription, error) {
 	if err := normalizeUserSubscriptionNextPayments(db, userID); err != nil {
 		return nil, err
 	}
@@ -32,7 +34,12 @@ WHERE user_id = ?`
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func(){
+		err := rows.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	subs := make([]structs.Subscription, 0)
 	for rows.Next() {
@@ -292,7 +299,12 @@ ORDER BY total DESC, category ASC`,
 	if err != nil {
 		return analytics, err
 	}
-	defer rows.Close()
+	defer func(){
+		err := rows.Close()
+		if err != nil {
+			log.Println(err)
+		}
+	}()
 
 	for rows.Next() {
 		var item structs.CategorySummary
@@ -512,13 +524,23 @@ ORDER BY g.id DESC`,
 			&item.InviteURL,
 			&item.Notes,
 		); err != nil {
-			rows.Close()
+			func(){
+				err := rows.Close()
+				if err != nil {
+					log.Println(err)
+				}
+			}()
 			return nil, err
 		}
 		groupRows = append(groupRows, item)
 	}
 	if err := rows.Err(); err != nil {
-		rows.Close()
+		func(){
+			err := rows.Close()
+			if err != nil {
+				log.Fatal(err)
+			}
+		}()
 		return nil, err
 	}
 	if err := rows.Close(); err != nil {
@@ -566,7 +588,12 @@ ORDER BY CASE WHEN gm.role = 'owner' THEN 0 ELSE 1 END, u.name`,
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func(){
+		err := rows.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	members := make([]structs.GroupMember, 0)
 	for rows.Next() {
@@ -604,7 +631,12 @@ func replaceGroupSubscriptions(db *sql.DB, groupID int64,
 	if err != nil {
 		return err
 	}
-	defer tx.Rollback()
+	defer func(){
+		err := tx.Rollback()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	if _, err := tx.Exec(""+
 		"DELETE FROM group_subscriptions WHERE group_id = ?",
@@ -668,7 +700,12 @@ ORDER BY s.name`,
 	if err != nil {
 		return nil, nil, 0, err
 	}
-	defer rows.Close()
+	defer func(){
+		err := rows.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	services := make([]string, 0)
 	subscriptionIDs := make([]int64, 0)
@@ -699,7 +736,12 @@ WHERE user_id = ? AND status = 1`, userID)
 	if err != nil {
 		return err
 	}
-	defer rows.Close()
+	defer func(){
+		err := rows.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	type paymentUpdate struct {
 		id          int64
@@ -820,7 +862,12 @@ func getLinkedGroupIDs(db *sql.DB, subscriptionID int64) ([]int64, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func(){
+		err := rows.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	groupIDs := make([]int64, 0)
 	for rows.Next() {
@@ -840,7 +887,12 @@ func getGroupSubscriptionIDs(db *sql.DB, groupID int64) ([]int64, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func(){
+		err := rows.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	subscriptionIDs := make([]int64, 0)
 	for rows.Next() {
@@ -944,7 +996,12 @@ ORDER BY month_key ASC`,
 	if err != nil {
 		return nil, err
 	}
-	defer rows.Close()
+	defer func(){
+		err := rows.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	totalsByMonth := make(map[string]int64)
 	for rows.Next() {

@@ -15,7 +15,12 @@ import (
 
 func main() {
 	db := database.ConnectionDB()
-	defer db.Close()
+	defer func() {
+		err := db.Close()
+		if err != nil {
+			log.Fatal(err)
+		}
+	}()
 
 	database.RunMigrations(db)
 
