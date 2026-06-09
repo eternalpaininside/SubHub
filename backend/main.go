@@ -88,5 +88,6 @@ func resolveFrontendDir() (string, error) {
 		}
 	}
 
-	return "", fmt.Errorf("looked in %q and %q", candidates[0], candidates[1])
+	return "", fmt.Errorf("looked in %q and %q",
+		candidates[0], candidates[1])
 }
