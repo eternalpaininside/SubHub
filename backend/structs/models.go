@@ -59,18 +59,6 @@ type ProfileStats struct {
 	MonthlySpend        int64 `json:"monthly_spend"`
 }
 
-type ProfilePreference struct {
-	Title   string `json:"title"`
-	Text    string `json:"text"`
-	Enabled bool   `json:"enabled"`
-}
-
-type ConnectedApp struct {
-	Name   string `json:"name"`
-	Status string `json:"status"`
-	Style  string `json:"style"`
-}
-
 type Group struct {
 	ID              int64         `json:"id"`
 	OwnerID         int64         `json:"owner_id"`

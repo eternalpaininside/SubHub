@@ -165,6 +165,14 @@ FROM payment_history`); err != nil {
 	}
 }
 
+func GetTime() (time.Time, time.Time) {
+	windowStart := time.Now().AddDate(0, -5, 0)
+	windowStart = time.Date(windowStart.Year(), windowStart.Month(),
+		1, 0, 0, 0, 0, windowStart.Location())
+	now := time.Now()
+	return windowStart, now
+}
+
 func backfillPaymentHistory(db *sql.DB) {
 	rows, err := db.Query(`
 SELECT id, user_id, price, period, next_payment, status
@@ -173,10 +181,7 @@ FROM subscriptions`)
 		log.Fatal(err)
 	}
 
-	windowStart := time.Now().AddDate(0, -5, 0)
-	windowStart = time.Date(windowStart.Year(), windowStart.Month(),
-		1, 0, 0, 0, 0, windowStart.Location())
-	now := time.Now()
+	windowStart, now := GetTime()
 	seeds := make([]structs.PaymentHistorySeed, 0)
 
 	for rows.Next() {
