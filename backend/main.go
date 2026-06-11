@@ -49,8 +49,10 @@ func registerFrontendRoutes() {
 
 	http.Handle("/assets/", http.StripPrefix("/assets/",
 		http.FileServer(http.Dir(filepath.Join(frontendDir, "assets")))))
+
 	http.Handle("/pages/", http.StripPrefix("/pages/",
 		http.FileServer(http.Dir(filepath.Join(frontendDir, "pages")))))
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/" {
 			http.ServeFile(w, r, filepath.Join(frontendDir, "pages", "index.html"))

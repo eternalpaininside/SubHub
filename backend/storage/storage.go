@@ -14,6 +14,21 @@ import (
 	"database/sql"
 )
 
+var monthLabels = map[time.Month]string{
+	time.January:   "Янв",
+	time.February:  "Фев",
+	time.March:     "Мар",
+	time.April:     "Апр",
+	time.May:       "Май",
+	time.June:      "Июн",
+	time.July:      "Июл",
+	time.August:    "Авг",
+	time.September: "Сен",
+	time.October:   "Окт",
+	time.November:  "Ноя",
+	time.December:  "Дек",
+}
+
 func closeRows(rows *sql.Rows) {
 	err := rows.Close()
 	if err != nil {
@@ -992,23 +1007,9 @@ ORDER BY month_key ASC`,
 }
 
 func localizeMonthLabel(date time.Time) string {
-	monthLabels := map[time.Month]string{
-		time.January:   "Янв",
-		time.February:  "Фев",
-		time.March:     "Мар",
-		time.April:     "Апр",
-		time.May:       "Май",
-		time.June:      "Июн",
-		time.July:      "Июл",
-		time.August:    "Авг",
-		time.September: "Сен",
-		time.October:   "Окт",
-		time.November:  "Ноя",
-		time.December:  "Дек",
-	}
-
 	if label, ok := monthLabels[date.Month()]; ok {
 		return label
 	}
+
 	return date.Format("Jan")
 }
