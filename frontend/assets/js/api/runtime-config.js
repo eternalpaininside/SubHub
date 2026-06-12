@@ -8,17 +8,15 @@ const toPositiveNumber = (value, fallback) => {
 const getDefaultApiBaseUrl = () => {
   const { protocol, hostname, port } = window.location;
 
-  if (protocol === 'file:') {
+  if (protocol === 'file:')
     return 'http://localhost:8080/api';
-  }
 
-  if (port === '8080') {
+  if (port === '8080')
     return '/api';
-  }
 
-  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+  if (hostname === 'localhost' || hostname === '127.0.0.1')
     return 'http://localhost:8080/api';
-  }
+
 
   return '/api';
 };

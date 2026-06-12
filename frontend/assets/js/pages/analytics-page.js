@@ -64,7 +64,10 @@ const renderKpiCard = ({ badge, title, valueLabel, meta }) => `
     <div class="analytics-kpi-title">${title}</div>
     <div class="metric-value analytics-kpi-value">${valueLabel}</div>
     <div class="analytics-kpi-meta-row">
-      ${meta.map((item) => `<span class="analytics-kpi-meta-pill${item.className ? ` ${item.className}` : ''}">${item.text}</span>`).join('')}
+      ${meta.map((item) =>
+    `<span class="analytics-kpi-meta-pill${item.className ?
+        `${item.className}` : ''}">${item.text}</span>`)
+    .join('')}
     </div>
   </article>
 `;
@@ -101,7 +104,8 @@ const renderAnalyticsContent = (viewModel) => {
       title: 'Расходы за месяц',
       valueLabel: viewModel.topCards.month.valueLabel,
       meta: [
-        { text: viewModel.topCards.month.trendText, className: `analytics-kpi-meta-pill-trend ${viewModel.topCards.month.trendClass}` },
+        { text: viewModel.topCards.month.trendText, className:
+              `analytics-kpi-meta-pill-trend ${viewModel.topCards.month.trendClass}` },
         { text: viewModel.topCards.month.previousSpendText }
       ]
     },
@@ -133,7 +137,8 @@ const renderAnalyticsContent = (viewModel) => {
         <span class="fact-tag fact-tag-category">${viewModel.facts.mostExpensiveSubscription.category}</span>
       </div>
     `),
-    renderFactCard('Ближайшие списания', `<div class="fact-list">${renderUpcomingCharges(viewModel.facts.upcomingCharges)}</div>`),
+    renderFactCard('Ближайшие списания',
+        `<div class="fact-list">${renderUpcomingCharges(viewModel.facts.upcomingCharges)}</div>`),
     renderFactCard('Разбивка по тарифам', `
         <div class="fact-split">
           <div class="fact-split-row">
@@ -202,8 +207,10 @@ const initRingChartTooltip = () => {
       const tooltipWidth = tooltip.offsetWidth || 268;
       const tooltipHeight = tooltip.offsetHeight || 120;
       const halfWidth = tooltipWidth / 2;
-      const x = Math.min(Math.max(event.clientX - rect.left, halfWidth + 8), rect.width - halfWidth - 8);
-      const y = Math.min(Math.max(event.clientY - rect.top - 14, tooltipHeight + 8), rect.height - 8);
+      const x = Math.min(Math.max(event.clientX - rect.left, halfWidth + 8),
+          rect.width - halfWidth - 8);
+      const y = Math.min(Math.max(event.clientY - rect.top - 14, tooltipHeight + 8),
+          rect.height - 8);
       tooltip.style.left = `${x}px`;
       tooltip.style.top = `${y}px`;
     };
@@ -214,7 +221,8 @@ const initRingChartTooltip = () => {
 
     segments.forEach((segment) => {
       const showTooltip = (event) => {
-        tooltip.textContent = `${segment.dataset.name || '—'}: ${segment.dataset.amount || '0'} • ${segment.dataset.share || '0'}%\nПодписки: ${segment.dataset.subscriptions || 'Нет подписок'}`;
+        tooltip.textContent = `${segment.dataset.name || '—'}: ${segment.dataset.amount || '0'} • ${segment.dataset.share || '0'}%\n
+        Подписки: ${segment.dataset.subscriptions || 'Нет подписок'}`;
         setTooltipPosition(event);
         tooltip.classList.add('is-visible');
       };

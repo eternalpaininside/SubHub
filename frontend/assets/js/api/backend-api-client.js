@@ -17,7 +17,8 @@ const categoryColorMap = {
 
 async function request(path, options = {}) {
   const controller = new AbortController();
-  const timeoutId = window.setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
+  const timeoutId = window.setTimeout(() =>
+      controller.abort(), REQUEST_TIMEOUT_MS);
 
   try {
     const response = await fetch(`${API_BASE_URL}${path}`, {
@@ -33,7 +34,8 @@ async function request(path, options = {}) {
       payload = null;
     }
 
-    if (!response.ok) throw new Error(payload?.error || `HTTP ${response.status}`);
+    if (!response.ok)
+      throw new Error(payload?.error || `HTTP ${response.status}`);
     return payload;
   } finally {
     window.clearTimeout(timeoutId);
@@ -43,7 +45,8 @@ async function request(path, options = {}) {
 const buildQuery = (params = {}) => {
   const query = new URLSearchParams();
   Object.entries(params).forEach(([key, value]) => {
-    if (value !== undefined && value !== null && value !== '') query.set(key, String(value));
+    if (value !== undefined && value !== null && value !== '')
+      query.set(key, String(value));
   });
   const suffix = query.toString();
   return suffix ? `?${suffix}` : '';
@@ -51,7 +54,8 @@ const buildQuery = (params = {}) => {
 
 const requireUserId = () => {
   const userId = getCurrentUserId();
-  if (!userId) throw new Error('Требуется вход в систему');
+  if (!userId)
+    throw new Error('Требуется вход в систему');
   return userId;
 };
 
@@ -60,18 +64,22 @@ const normalizePeriod = (value) => Number(value) === 12 ? 'год' : 'мес';
 const pickIcon = (name) => String(name || '?').trim().charAt(0).toUpperCase() || '?';
 
 const formatDateText = (isoDate) => {
-  if (!isoDate) return '—';
+  if (!isoDate)
+    return '—';
   const date = new Date(`${isoDate}T00:00:00`);
-  if (Number.isNaN(date.getTime())) return isoDate;
+  if (Number.isNaN(date.getTime()))
+    return isoDate;
   return new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }).format(date);
 };
 
 const getDaysLeftNumber = (isoDate) => {
-  if (!isoDate) return null;
+  if (!isoDate)
+    return null;
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const target = new Date(`${isoDate}T00:00:00`);
-  if (Number.isNaN(target.getTime())) return null;
+  if (Number.isNaN(target.getTime()))
+    return null;
   return Math.ceil((target.getTime() - today.getTime()) / 86400000);
 };
 

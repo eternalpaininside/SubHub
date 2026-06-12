@@ -12,7 +12,8 @@ const parseDaysLeft = (value) => {
 
 const getDaysLeftNumber = (subscription) => {
   const direct = Number(subscription.daysLeftNumber);
-  if (Number.isFinite(direct)) return direct;
+  if (Number.isFinite(direct))
+    return direct;
   return parseDaysLeft(subscription.daysLeft);
 };
 
@@ -22,9 +23,12 @@ const getNiceStep = (value) => {
   const base = 10 ** exponent;
   const fraction = safeValue / base;
 
-  if (fraction <= 1) return 1 * base;
-  if (fraction <= 2) return 2 * base;
-  if (fraction <= 5) return 5 * base;
+  if (fraction <= 1)
+    return base;
+  if (fraction <= 2)
+    return 2 * base;
+  if (fraction <= 5)
+    return 5 * base;
   return 10 * base;
 };
 
@@ -45,7 +49,9 @@ const describePieSlice = (cx, cy, radius, startAngle, endAngle) => {
 };
 
 const formatSubscriptionsPreview = (names) => {
-  if (!names.length) return 'Нет подписок';
+  if (!names.length)
+    return 'Нет подписок';
+
   const firstThree = names.slice(0, 3);
   const rest = names.length - firstThree.length;
   return rest > 0 ? `${firstThree.join(', ')}, ...+${rest}` : firstThree.join(', ');
@@ -68,8 +74,11 @@ export const buildAnalyticsPageViewModel = ({ analytics, subscriptions, profile,
 
   const categorySubscriptions = subscriptions.reduce((accumulator, subscription) => {
     const key = String(subscription.category || '').trim().toLowerCase();
-    if (!key) return accumulator;
-    if (!accumulator.has(key)) accumulator.set(key, []);
+    if (!key)
+      return accumulator;
+    if (!accumulator.has(key))
+      accumulator.set(key, []);
+
     accumulator.get(key).push(subscription.name);
     return accumulator;
   }, new Map());
@@ -127,10 +136,13 @@ export const buildAnalyticsPageViewModel = ({ analytics, subscriptions, profile,
   const dynamicTrend = previousBar
     ? ((lastBar - previousBar) / previousBar) * 100
     : 0;
-  const spentYearToDate = bars.reduce((sum, bar) => sum + bar.amount, 0);
-  const monthsWithHistory = bars.filter((bar) => bar.amount > 0).length || bars.length || 1;
+  const spentYearToDate = bars.reduce((sum, bar) =>
+      sum + bar.amount, 0);
+  const monthsWithHistory = bars.filter((bar) =>
+      bar.amount > 0).length || bars.length || 1;
   const averagePerMonth = Math.round(spentYearToDate / monthsWithHistory);
-  const upcomingTotal = upcomingCharges.reduce((sum, subscription) => sum + subscription.monthlyPrice, 0);
+  const upcomingTotal = upcomingCharges.reduce((sum, subscription) =>
+      sum + subscription.monthlyPrice, 0);
   const nearestChargeDays = upcomingCharges[0]?.daysLeftNumber ?? null;
 
   const maxAmount = Math.max(...bars.map((bar) => bar.amount), 1);
@@ -140,7 +152,8 @@ export const buildAnalyticsPageViewModel = ({ analytics, subscriptions, profile,
   const autoMax = autoStep * yTickSegments;
   const yMax = userMaxBudget > 0 ? Math.max(maxAmount, userMaxBudget) : autoMax;
   const yStep = userMaxBudget > 0 ? yMax / yTickSegments : autoStep;
-  const yTicks = Array.from({ length: yTickSegments + 1 }, (_, index) => {
+  const yTicks = Array.from({ length: yTickSegments + 1 },
+      (_, index) => {
     const value = yMax - index * yStep;
     return { label: `${formatRubles(value)} ₽` };
   });

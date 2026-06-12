@@ -25,7 +25,8 @@ async function renderGroups() {
       })}
 
       <section class="groups-stack">
-        ${groups.length ? groups.map(groupCard).join('') : '<article class="card">Пока нет групп. Создайте первую группу через кнопку сверху.</article>'}
+        ${groups.length ? groups.map(groupCard).join('') : 
+      '<article class="card">Пока нет групп. Создайте первую группу через кнопку сверху.</article>'}
       </section>
     </main>
   `;

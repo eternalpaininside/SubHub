@@ -26,7 +26,8 @@ async function renderProfile() {
 
   const profileTiles = [
     { label: 'Email', value: data.user.email, tileClass: 'profile-tile-neutral' },
-    ...data.stats.map((item) => ({ ...item, tileClass: 'profile-tile-accent' }))
+    ...data.stats.map((item) =>
+        ({ ...item, tileClass: 'profile-tile-accent' }))
   ];
 
   document.body.innerHTML = buildLayout('profile', `

@@ -25,8 +25,10 @@ const authModes = {
     subtitleKey: 'auth_login_subtitle',
     submitKey: 'button_login',
     fields: [
-      { id: 'login-email', label: t('label_email'), type: 'email', placeholder: 'you@example.com' },
-      { id: 'login-password', label: t('label_password'), type: 'password', placeholder: 'Введите пароль' }
+      { id: 'login-email', label: t('label_email'),
+        type: 'email', placeholder: 'you@example.com' },
+      { id: 'login-password', label: t('label_password'),
+         type: 'password', placeholder: 'Введите пароль' }
     ]
   },
   register: {
@@ -34,9 +36,12 @@ const authModes = {
     subtitleKey: 'auth_register_subtitle',
     submitKey: 'button_register',
     fields: [
-      { id: 'register-name', label: t('label_name'), placeholder: 'Ваше имя' },
-      { id: 'register-email', label: t('label_email'), type: 'email', placeholder: 'you@example.com' },
-      { id: 'register-password', label: t('label_password'), type: 'password', placeholder: 'Придумайте пароль' }
+      { id: 'register-name', label: t('label_name'),
+        placeholder: 'Ваше имя' },
+      { id: 'register-email', label: t('label_email'),
+        type: 'email', placeholder: 'you@example.com' },
+      { id: 'register-password', label: t('label_password'),
+        type: 'password', placeholder: 'Придумайте пароль' }
     ]
   }
 };
@@ -47,7 +52,9 @@ const subscriptionEditableFields = {
   status: { type: 'select', fallback: 'true' }
 };
 
-const renderInputField = ({ id = '', label, type = 'text', placeholder = '', dataField = '', full = false }) => `
+const renderInputField = ({ id = '', label, type = 'text',
+                            placeholder = '', dataField = '',
+                            full = false }) => `
   <label class="${full ? fieldFullClass : 'field-label'}">${label}
     <input
       ${id ? `id="${id}"` : ''}
@@ -65,7 +72,7 @@ const renderSelectField = ({ id = '', label, options, dataField = '', full = fal
       ${id ? `id="${id}"` : ''}
       ${dataField ? `data-edit-subscription-field="${dataField}"` : ''}
       class="field-input field-select"
-    >
+      >
       ${options.map((option) => {
         const normalized = typeof option === 'string' ? { label: option, value: option } : option;
         return `<option value="${normalized.value}">${normalized.label}</option>`;
@@ -92,9 +99,12 @@ const renderCheckboxListField = ({ id = '', label, full = false }) => `
 `;
 
 const renderField = (field) => {
-  if (field.kind === 'multiselect') return renderCheckboxListField(field);
-  if (field.kind === 'select') return renderSelectField(field);
-  if (field.kind === 'textarea') return renderTextareaField(field);
+  if (field.kind === 'multiselect')
+    return renderCheckboxListField(field);
+  if (field.kind === 'select')
+    return renderSelectField(field);
+  if (field.kind === 'textarea')
+    return renderTextareaField(field);
   return renderInputField(field);
 };
 
@@ -142,7 +152,9 @@ const renderAuthModal = () => `
           <p class="modal-subtitle">${t(config.subtitleKey)}</p>
           <form class="modal-form" id="${mode}-form">
             ${config.fields.map(renderField).join('')}
-            <button class="primary-btn modal-submit" type="button" data-auth-submit="${mode}">${t(config.submitKey)}</button>
+            <button class="primary-btn modal-submit" 
+            type="button" 
+            data-auth-submit="${mode}">${t(config.submitKey)}</button>
           </form>
         </div>
       `).join('')}
@@ -159,14 +171,20 @@ const renderLayoutHeader = (activePage) => {
         <a class="logo" href="index.html">${t('brand')}</a>
         <nav class="nav">
           ${navItems.map((item) => `
-            <a class="nav-link ${item.key === activePage ? 'is-active' : ''}" href="${item.href}">${t(item.labelKey)}</a>
+            <a class="nav-link${item.key === activePage ? 'is-active' : ''}" 
+            href="${item.href}">${t(item.labelKey)}</a>
           `).join('')}
         </nav>
       </div>
       <div class="topbar-actions">
-        <button class="help-button js-open-help ${activePage === 'help' ? 'is-active' : ''}" type="button">Помощь</button>
-        <button class="profile-chip ${activePage === 'profile' ? 'is-active' : ''}" type="button" aria-label="${t('auth_open_profile')}">
-          <img class="profile-photo" src="../assets/images/profile.svg" alt="Фото профиля" />
+        <button class="help-button js-open-help ${activePage === 'help' ? 'is-active' : ''}" 
+        type="button">Помощь</button>
+        <button class="profile-chip ${activePage === 'profile' ? 'is-active' : ''}" 
+        type="button" aria-label="${t('auth_open_profile')}">
+          <img class="profile-photo" 
+          src="../assets/images/profile.svg" 
+          alt="Фото профиля"
+          />
           <span>${profileLabel}</span>
         </button>
       </div>
@@ -203,10 +221,10 @@ const groupModalMarkup = () => renderFormModal({
   subtitle: 'Выберите подписки для группы. Её стоимость посчитается автоматически.',
   formClass: 'modal-form two-columns',
   fields: [
-    { id: 'group-name', label: 'Название группы', placeholder: 'Например, Семья Бахаревых' },
+    { id: 'group-name', label: 'Название группы', placeholder: 'Например, Семья Ивановых' },
     { id: 'group-type', label: 'Тип группы', kind: 'select', options: groupTypes },
     { id: 'group-subscription-ids', label: 'Подписки группы', kind: 'multiselect', full: true },
-    { id: 'group-notes', label: 'Примечания', kind: 'textarea', full: true, placeholder: 'Пока без полноценной логики долей и приглашений' }
+    { id: 'group-notes', label: 'Примечания', kind: 'textarea', full: true, placeholder: 'Групповые/Семейные подписки' }
   ],
   actions: [
     { label: 'Отмена', className: 'ghost-btn js-close-modal' },
@@ -299,7 +317,8 @@ const updateHeaderProfileLabel = () => {
   if (label) label.textContent = getCurrentUser()?.name || 'Войти';
 };
 
-const isForcedAuthActive = () => window.localStorage.getItem(STORAGE_KEYS.forceAuth) === 'true';
+const isForcedAuthActive = () =>
+    window.localStorage.getItem(STORAGE_KEYS.forceAuth) === 'true';
 
 const setForcedAuthState = (enabled) => {
   if (enabled) {
@@ -317,15 +336,20 @@ const readSelectedIntValues = (id) => Array.from(document.querySelectorAll(`#${i
   .filter((value) => Number.isFinite(value) && value > 0);
 
 const requireAuthForModal = (modalManager, currentModalId) => {
-  if (isAuthenticated()) return true;
+  if (isAuthenticated())
+    return true;
+
   alert('Сначала войдите в аккаунт.');
   modalManager.close(currentModalId);
   modalManager.open('auth-modal');
+
   return false;
 };
 
 const validateSubscriptionPayload = (payload, message) => {
-  if (!payload.name || !payload.category || !payload.next_payment || !payload.link || !Number.isFinite(payload.price) || payload.price <= 0) {
+  if (!payload.name || !payload.category
+      || !payload.next_payment || !payload.link
+      || !Number.isFinite(payload.price) || payload.price <= 0) {
     alert(message);
     return false;
   }
@@ -360,10 +384,12 @@ const initAddSubscriptionForm = (modalManager) => {
   const addButton = document.getElementById('add-subscription-button');
   const modal = document.getElementById('subscription-modal');
   const form = modal?.querySelector('form');
-  if (!addButton || !modal || !form) return;
+  if (!addButton || !modal || !form)
+    return;
 
   addButton.addEventListener('click', async () => {
-    if (!requireAuthForModal(modalManager, 'subscription-modal')) return;
+    if (!requireAuthForModal(modalManager, 'subscription-modal'))
+      return;
 
     const payload = buildSubscriptionPayloadFromModal();
     if (!validateSubscriptionPayload(payload, 'Заполните все обязательные поля корректно.')) return;
@@ -383,7 +409,8 @@ const initEditSubscriptionForm = (modalManager) => {
   const modal = document.getElementById('subscription-edit-modal');
   const saveButton = document.getElementById('save-subscription-button');
   const deleteButton = document.getElementById('delete-subscription-button');
-  if (!modal || !saveButton || !deleteButton) return;
+  if (!modal || !saveButton || !deleteButton)
+    return;
 
   saveButton.addEventListener('click', async () => {
     const id = Number(editContextStore.getState().subscription?.id);
@@ -393,7 +420,8 @@ const initEditSubscriptionForm = (modalManager) => {
     }
 
     const payload = buildEditedSubscriptionPayload(modal);
-    if (!validateSubscriptionPayload(payload, 'Заполните поля подписки корректно.')) return;
+    if (!validateSubscriptionPayload(payload, 'Заполните поля подписки корректно.'))
+      return;
 
     try {
       await api.updateSubscription(id, payload);
@@ -423,10 +451,12 @@ const initEditSubscriptionForm = (modalManager) => {
 
 const initGroupCreateForm = (modalManager) => {
   const createButton = document.getElementById('create-group-button');
-  if (!createButton) return;
+  if (!createButton)
+    return;
 
   createButton.addEventListener('click', async () => {
-    if (!requireAuthForModal(modalManager, 'group-modal')) return;
+    if (!requireAuthForModal(modalManager, 'group-modal'))
+      return;
 
     const payload = {
       name: readTrimmedValue('group-name'),
@@ -454,7 +484,8 @@ const initGroupCreateForm = (modalManager) => {
 const initGroupEditForm = (modalManager) => {
   const saveButton = document.getElementById('save-group-button');
   const deleteButton = document.getElementById('delete-group-button');
-  if (!saveButton || !deleteButton) return;
+  if (!saveButton || !deleteButton)
+    return;
 
   saveButton.addEventListener('click', async () => {
     const id = Number(editContextStore.getState().group?.id);
@@ -504,10 +535,12 @@ const initGroupEditForm = (modalManager) => {
 const initGroupJoinForm = (modalManager) => {
   const joinButton = document.getElementById('join-group-button');
   const inviteField = document.getElementById('group-join-invite');
-  if (!joinButton || !inviteField) return;
+  if (!joinButton || !inviteField)
+    return;
 
   joinButton.addEventListener('click', async () => {
-    if (!requireAuthForModal(modalManager, 'group-join-modal')) return;
+    if (!requireAuthForModal(modalManager, 'group-join-modal'))
+      return;
 
     const inviteURL = inviteField.value.trim();
     if (!inviteURL) {
@@ -533,10 +566,13 @@ const enablePageMotion = () => {
 
   document.querySelectorAll('a[href]').forEach((link) => {
     const href = link.getAttribute('href');
-    if (!href || href.startsWith('#') || href.startsWith('http') || link.target === '_blank') return;
+    if (!href || href.startsWith('#') || href.startsWith('http') || link.target === '_blank')
+      return;
 
     link.addEventListener('click', (event) => {
-      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+      if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey)
+        return;
+
       event.preventDefault();
       document.body.classList.remove('is-page-ready');
       document.body.classList.add('is-page-exiting');
@@ -581,7 +617,10 @@ const initAuthActions = (modalManager) => {
         setCurrentUser(response.user);
         setForcedAuthState(false);
         const authModal = modalManager.getModal('auth-modal');
-        if (authModal) authModal.dataset.locked = 'false';
+
+        if (authModal)
+          authModal.dataset.locked = 'false';
+
         updateHeaderProfileLabel();
         modalManager.close('auth-modal');
         window.setTimeout(() => {
@@ -595,7 +634,8 @@ const initAuthActions = (modalManager) => {
 };
 
 const populateSubscriptionEditModal = (modal, trigger) => {
-  if (!modal || !trigger) return;
+  if (!modal || !trigger)
+    return;
 
     const payload = {
       id: trigger.dataset.subscriptionId || '',
@@ -624,7 +664,8 @@ const populateSubscriptionEditModal = (modal, trigger) => {
 
 const populateSubscriptionsSelect = async (selectId, selectedIDs = []) => {
   const container = document.getElementById(selectId);
-  if (!container) return;
+  if (!container)
+    return;
 
   try {
     const subscriptions = await api.getSubscriptions();
@@ -684,6 +725,7 @@ export function initLayoutUI() {
       setFieldValue(groupEditModal, '#group-edit-name', groupState.name);
       applySelectValue(groupEditModal, '#group-edit-type', groupState.type, 'Семейная');
       setFieldValue(groupEditModal, '#group-edit-notes', groupState.notes);
+
       await populateSubscriptionsSelect('group-edit-subscription-ids', groupState.subscriptionIDs);
       modalManager.open('group-edit-modal');
     });
@@ -709,7 +751,9 @@ export function initLayoutUI() {
 
   document.querySelectorAll('.js-logout').forEach((button) => {
     button.addEventListener('click', () => {
-      if (!isAuthenticated()) return;
+      if (!isAuthenticated())
+        return;
+
       clearCurrentUser();
       setForcedAuthState(true);
       updateHeaderProfileLabel();
