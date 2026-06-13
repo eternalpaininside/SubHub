@@ -104,25 +104,37 @@ img {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  align-items: stretch;
+  align-items: center;
 }
 
 .nav-link {
   position: relative;
   color: var(--muted);
   font-weight: 500;
-  padding: 12px 12px;
-  min-width: 132px;
-  display: inline-flex;
+  flex: 1;
+
+  width: 132px;
+  height: 48px;
+
+  display: flex;
   align-items: center;
   justify-content: center;
+
   text-align: center;
+  line-height: 1;
+
+  padding: 0 12px;
   border-radius: 18px;
   transition: 0.2s ease;
 }
 
 .nav-link:hover,
-.nav-link.is-active,
+.nav-link.is-active {
+  font-weight: 500;
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.09);
+}
+
 .icon-btn.is-active,
 .profile-chip.is-active {
   color: var(--text);
@@ -130,7 +142,6 @@ img {
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
 }
 
-.nav-link.is-active::after,
 .icon-btn.is-active::after,
 .profile-chip.is-active::after {
   content: "";
@@ -138,7 +149,6 @@ img {
   pointer-events: none;
 }
 
-.nav-link.is-active::after,
 .icon-btn.is-active::after,
 .profile-chip.is-active::after {
   inset: 0;

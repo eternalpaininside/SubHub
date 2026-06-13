@@ -7,9 +7,10 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
 	"subhub-backend/database"
 	"subhub-backend/handlers"
-
+	
 	_ "github.com/mattn/go-sqlite3"
 )
 
@@ -24,15 +25,24 @@ func main() {
 
 	database.RunMigrations(db)
 
-	http.HandleFunc("/api/auth/register", handlers.AuthRegisterHandler(db))
-	http.HandleFunc("/api/auth/login", handlers.AuthLoginHandler(db))
-	http.HandleFunc("/api/subscriptions", handlers.SubscriptionsHandler(db))
-	http.HandleFunc("/api/subscriptions/", handlers.SubscriptionByIDHandler(db))
-	http.HandleFunc("/api/analytics", handlers.AnalyticsHandler(db))
-	http.HandleFunc("/api/profile", handlers.ProfileHandler(db))
-	http.HandleFunc("/api/groups", handlers.GroupsHandler(db))
-	http.HandleFunc("/api/groups/", handlers.GroupByIDHandler(db))
-	http.HandleFunc("/api/groups/join", handlers.JoinGroupHandler(db))
+	http.HandleFunc("/api/auth/register",
+		handlers.AuthRegisterHandler(db))
+	http.HandleFunc("/api/auth/login",
+		handlers.AuthLoginHandler(db))
+	http.HandleFunc("/api/subscriptions",
+		handlers.SubscriptionsHandler(db))
+	http.HandleFunc("/api/subscriptions/",
+		handlers.SubscriptionByIDHandler(db))
+	http.HandleFunc("/api/analytics",
+		handlers.AnalyticsHandler(db))
+	http.HandleFunc("/api/profile",
+		handlers.ProfileHandler(db))
+	http.HandleFunc("/api/groups",
+		handlers.GroupsHandler(db))
+	http.HandleFunc("/api/groups/",
+		handlers.GroupByIDHandler(db))
+	http.HandleFunc("/api/groups/join",
+		handlers.JoinGroupHandler(db))
 
 	registerFrontendRoutes()
 

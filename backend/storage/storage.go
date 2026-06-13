@@ -628,10 +628,7 @@ func replaceGroupSubscriptions(db *sql.DB, groupID int64,
 		return err
 	}
 	defer func() {
-		err := tx.Rollback()
-		if err != nil {
-			log.Fatal(err)
-		}
+		_ = tx.Rollback()
 	}()
 
 	if _, err := tx.Exec(""+

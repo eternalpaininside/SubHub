@@ -12,8 +12,10 @@ const parseDaysLeft = (value) => {
 
 const getDaysLeftNumber = (subscription) => {
   const direct = Number(subscription.daysLeftNumber);
+
   if (Number.isFinite(direct))
     return direct;
+
   return parseDaysLeft(subscription.daysLeft);
 };
 
@@ -67,7 +69,8 @@ export const buildAnalyticsPageViewModel = ({ analytics, subscriptions, profile,
     .map((category) => ({ ...category, amount: toNumber(category.value) }))
     .sort((left, right) => right.amount - left.amount);
   const totalCategoriesAmount = categoryTotals.reduce((sum, item) => sum + item.amount, 0);
-  const topCategory = categoryTotals[0] || { name: '—', amount: 0, color: '#bd5bff' };
+  const topCategory = categoryTotals[0] ||
+      { name: '—', amount: 0, color: '#bd5bff' };
   const topCategoryShare = totalCategoriesAmount
     ? Math.round((topCategory.amount / totalCategoriesAmount) * 100)
     : 0;
@@ -126,35 +129,52 @@ export const buildAnalyticsPageViewModel = ({ analytics, subscriptions, profile,
   const groupedTotal = subscriptionStats
     .filter((subscription) => String(subscription.planType).toLowerCase().includes('груп'))
     .reduce((sum, subscription) => sum + subscription.monthlyPrice, 0);
+
   const individualTotal = subscriptionStats
     .filter((subscription) => !String(subscription.planType).toLowerCase().includes('груп'))
     .reduce((sum, subscription) => sum + subscription.monthlyPrice, 0);
+
   const yearlyProjection = (groupedTotal + individualTotal) * 12;
   const currentMonthAmount = toNumber(analytics.month);
-  const previousBar = bars[bars.length - 2]?.amount ?? bars[bars.length - 1]?.amount ?? 0;
+  const previousBar = bars[bars.length - 2]?.amount
+      ?? bars[bars.length - 1]?.amount
+      ?? 0;
+
   const lastBar = currentMonthAmount;
-  const dynamicTrend = previousBar
+  const dynamicTrend = Number((previousBar
     ? ((lastBar - previousBar) / previousBar) * 100
-    : 0;
+    : 0).toFixed(1));
+
   const spentYearToDate = bars.reduce((sum, bar) =>
       sum + bar.amount, 0);
   const monthsWithHistory = bars.filter((bar) =>
       bar.amount > 0).length || bars.length || 1;
+
   const averagePerMonth = Math.round(spentYearToDate / monthsWithHistory);
   const upcomingTotal = upcomingCharges.reduce((sum, subscription) =>
       sum + subscription.monthlyPrice, 0);
+
   const nearestChargeDays = upcomingCharges[0]?.daysLeftNumber ?? null;
 
   const maxAmount = Math.max(...bars.map((bar) => bar.amount), 1);
   const userMaxBudget = toNumber(profile?.plan?.monthlyBudget);
-  const yTickSegments = userMaxBudget > 0 ? 5 : 4;
+  const yTickSegments = userMaxBudget > 0
+      ? 5 : 4;
+
   const autoStep = getNiceStep(maxAmount / yTickSegments);
   const autoMax = autoStep * yTickSegments;
-  const yMax = userMaxBudget > 0 ? Math.max(maxAmount, userMaxBudget) : autoMax;
-  const yStep = userMaxBudget > 0 ? yMax / yTickSegments : autoStep;
+
+  const yMax = userMaxBudget > 0
+      ? Math.max(maxAmount, userMaxBudget)
+      : autoMax;
+  const yStep = userMaxBudget > 0
+      ? yMax / yTickSegments
+      : autoStep;
+
   const yTicks = Array.from({ length: yTickSegments + 1 },
       (_, index) => {
     const value = yMax - index * yStep;
+
     return { label: `${formatRubles(value)} ₽` };
   });
 

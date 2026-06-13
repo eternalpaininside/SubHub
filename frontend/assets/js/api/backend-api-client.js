@@ -7,12 +7,12 @@ import { formatRubles } from '../ui/formatters.js';
 
 const analyticsPalette = ['#bd5bff', '#ff5da5', '#42a3ff', '#ffb128', '#39d17f', '#7cd4ff'];
 const categoryColorMap = {
-  'Стриминг': 'linear-gradient(135deg, #240000, #7d0014)',
-  'Музыка': 'linear-gradient(135deg, #0b3a28, #0f8d50)',
-  'Облако': 'linear-gradient(135deg, #00132f, #004ab8)',
+  'Стриминг':       'linear-gradient(135deg, #240000, #7d0014)',
+  'Музыка':         'linear-gradient(135deg, #0b3a28, #0f8d50)',
+  'Облако':         'linear-gradient(135deg, #00132f, #004ab8)',
   'Продуктивность': 'linear-gradient(135deg, #1e1e22, #2a2a33)',
-  'AI': 'linear-gradient(135deg, #0c3f34, #18a67f)',
-  'Комплекс': 'linear-gradient(135deg, #421300, #8d2314)'
+  'AI':             'linear-gradient(135deg, #0c3f34, #18a67f)',
+  'Комплекс':       'linear-gradient(135deg, #421300, #8d2314)'
 };
 
 async function request(path, options = {}) {
@@ -109,14 +109,14 @@ const mapSubscription = (subscription) => {
     id: subscription.id,
     name: subscription.name,
     icon: pickIcon(subscription.name),
-    iconBg: categoryColorMap[subscription.category] || 'linear-gradient(135deg, #25324b, #3d5a80)',
+    iconBg: categoryColorMap[subscription.category] ||
+        'linear-gradient(135deg, #25324b, #3d5a80)',
     price: String(subscription.price),
     period: normalizePeriod(subscription.period),
     category: subscription.category,
     planType: subscription.plan_type || 'Индивидуальный',
     dateText: formatDateText(subscription.next_payment),
-    nextPaymentDate: subscription.next_payment,
-    daysLeftNumber,
+    nextPaymentDate: subscription.next_payment, daysLeftNumber,
     daysLeft: daysLeftNumber === null ? '' : `${daysLeftNumber} дн.`,
     siteUrl: subscription.link,
     comment: subscription.comment || '',
@@ -131,7 +131,8 @@ const mapGroup = (group) => ({
   inviteUrl: group.invite_url || '',
   members: Array.isArray(group.members) ? group.members : [],
   services: Array.isArray(group.services) ? group.services : [],
-  subscriptionIds: Array.isArray(group.subscription_ids) ? group.subscription_ids.map((id) => Number(id)).filter(Boolean) : []
+  subscriptionIds: Array.isArray(group.subscription_ids) ?
+      group.subscription_ids.map((id) => Number(id)).filter(Boolean) : []
 });
 
 const mapProfile = (profile) => {
@@ -139,7 +140,8 @@ const mapProfile = (profile) => {
   return {
     user: {
       name: profile.user.name,
-      handle: currentUser?.email ? `@${String(currentUser.email).split('@')[0]}` : `@user${profile.user.id}`,
+      handle: currentUser?.email ?
+          `@${String(currentUser.email).split('@')[0]}` : `@user${profile.user.id}`,
       email: profile.user.email
     },
     stats: [
@@ -152,9 +154,12 @@ const mapProfile = (profile) => {
 
 const getSubscriptions = async (filters = {}) => {
   const subscriptions = (await requestForCurrentUser('/subscriptions')).map(mapSubscription);
+
   return subscriptions.filter((subscription) => {
-    const matchesCategory = !filters.category || filters.category === 'Все' || subscription.category === filters.category;
-    const matchesPlanType = !filters.planType || subscription.planType === filters.planType;
+    const matchesCategory = !filters.category
+        || filters.category === 'Все' || subscription.category === filters.category;
+    const matchesPlanType = !filters.planType
+        || subscription.planType === filters.planType;
     return matchesCategory && matchesPlanType;
   });
 };
@@ -164,8 +169,10 @@ const getGroups = async () => (await requestForCurrentUser('/groups')).map(mapGr
 const getProfile = async () => mapProfile(await requestForCurrentUser('/profile'));
 
 export const api = {
-  register: (payload) => request('/auth/register', { method: 'POST', body: JSON.stringify(payload) }),
-  login: (payload) => request('/auth/login', { method: 'POST', body: JSON.stringify(payload) }),
+  register: (payload) => request('/auth/register',
+      { method: 'POST', body: JSON.stringify(payload) }),
+  login: (payload) => request('/auth/login',
+      { method: 'POST', body: JSON.stringify(payload) }),
 
   getSubscriptions,
 
@@ -181,7 +188,8 @@ export const api = {
     body: JSON.stringify({ ...payload, user_id: payload.user_id || requireUserId() })
   }),
 
-  deleteSubscription: (id) => request(`/subscriptions/${id}${buildQuery({ user_id: requireUserId() })}`, { method: 'DELETE' }),
+  deleteSubscription: (id) => request(`/subscriptions/${id}${
+    buildQuery({user_id: requireUserId()})}`, { method: 'DELETE' }),
 
   getAnalytics,
 
