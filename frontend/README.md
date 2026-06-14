@@ -15,14 +15,14 @@
 
 ## Используемые API
 
-- `GET /api/subscriptions`
-- `GET /api/analytics`
-- `GET /api/groups`
-- `GET /api/profile`
-- `POST /api/auth/register`
-- `POST /api/auth/login`
-- `POST /api/subscriptions`
-- `PUT /api/subscriptions/{id}`
-- `DELETE /api/subscriptions/{id}`
-- `POST /api/groups`
-- `POST /api/groups/join`
+- `GET /subscriptions`
+- `GET /analytics`
+- `GET /groups`
+- `GET /profile`
+- `POST /auth/register`
+- `POST /auth/login`
+- `POST /subscriptions`
+- `PUT /subscriptions/{id}`
+- `DELETE /subscriptions/{id}`
+- `POST /groups`
+- `POST /groups/join`

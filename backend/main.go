@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
 	"subhub-backend/database"
 	"subhub-backend/handlers"
 
@@ -24,15 +25,24 @@ func main() {
 
 	database.RunMigrations(db)
 
-	http.HandleFunc("/api/auth/register", handlers.AuthRegisterHandler(db))
-	http.HandleFunc("/api/auth/login", handlers.AuthLoginHandler(db))
-	http.HandleFunc("/api/subscriptions", handlers.SubscriptionsHandler(db))
-	http.HandleFunc("/api/subscriptions/", handlers.SubscriptionByIDHandler(db))
-	http.HandleFunc("/api/analytics", handlers.AnalyticsHandler(db))
-	http.HandleFunc("/api/profile", handlers.ProfileHandler(db))
-	http.HandleFunc("/api/groups", handlers.GroupsHandler(db))
-	http.HandleFunc("/api/groups/", handlers.GroupByIDHandler(db))
-	http.HandleFunc("/api/groups/join", handlers.JoinGroupHandler(db))
+	http.HandleFunc("/auth/register",
+		handlers.AuthRegisterHandler(db))
+	http.HandleFunc("/auth/login",
+		handlers.AuthLoginHandler(db))
+	http.HandleFunc("/subscriptions",
+		handlers.SubscriptionsHandler(db))
+	http.HandleFunc("/subscriptions/",
+		handlers.SubscriptionByIDHandler(db))
+	http.HandleFunc("/analytics",
+		handlers.AnalyticsHandler(db))
+	http.HandleFunc("/profile",
+		handlers.ProfileHandler(db))
+	http.HandleFunc("/groups",
+		handlers.GroupsHandler(db))
+	http.HandleFunc("/groups/",
+		handlers.GroupByIDHandler(db))
+	http.HandleFunc("/groups/join",
+		handlers.JoinGroupHandler(db))
 
 	registerFrontendRoutes()
 
@@ -49,8 +59,10 @@ func registerFrontendRoutes() {
 
 	http.Handle("/assets/", http.StripPrefix("/assets/",
 		http.FileServer(http.Dir(filepath.Join(frontendDir, "assets")))))
+
 	http.Handle("/pages/", http.StripPrefix("/pages/",
 		http.FileServer(http.Dir(filepath.Join(frontendDir, "pages")))))
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		if r.URL.Path == "/" {
 			http.ServeFile(w, r, filepath.Join(frontendDir, "pages", "index.html"))
