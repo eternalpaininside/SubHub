@@ -1,4 +1,2 @@
-.idea
-.gocache
-.gitignore
-.DS_STORE
+/.idea/
+/.gocache/
