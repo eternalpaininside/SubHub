@@ -61,10 +61,10 @@ FROM subscriptions`)
 	}
 
 	windowStart, now := GetTime()
-	seeds := make([]structs.PaymentHistorySeed, 0)
+	seeds := make([]structs.PaymentHistory, 0)
 
 	for rows.Next() {
-		var seed structs.PaymentHistorySeed
+		var seed structs.PaymentHistory
 		if err := rows.Scan(
 			&seed.SubscriptionID,
 			&seed.UserID,

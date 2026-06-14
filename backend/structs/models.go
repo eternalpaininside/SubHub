@@ -19,7 +19,6 @@ type User struct {
 	Name      string `json:"name"`
 	Email     string `json:"email"`
 	Password  string `json:"-"`
-	TgID      string `json:"tg_id"`
 	CreatedAt string `json:"created_at,omitempty"`
 }
 
@@ -84,7 +83,7 @@ type JoinGroupRequest struct {
 	InviteURL string `json:"invite_url"`
 }
 
-type PaymentHistorySeed struct {
+type PaymentHistory struct {
 	UserID         int64
 	SubscriptionID int64
 	Price          int64

@@ -25,24 +25,15 @@ func main() {
 
 	database.RunMigrations(db)
 
-	http.HandleFunc("/auth/register",
-		handlers.AuthRegisterHandler(db))
-	http.HandleFunc("/auth/login",
-		handlers.AuthLoginHandler(db))
-	http.HandleFunc("/subscriptions",
-		handlers.SubscriptionsHandler(db))
-	http.HandleFunc("/subscriptions/",
-		handlers.SubscriptionByIDHandler(db))
-	http.HandleFunc("/analytics",
-		handlers.AnalyticsHandler(db))
-	http.HandleFunc("/profile",
-		handlers.ProfileHandler(db))
-	http.HandleFunc("/groups",
-		handlers.GroupsHandler(db))
-	http.HandleFunc("/groups/",
-		handlers.GroupByIDHandler(db))
-	http.HandleFunc("/groups/join",
-		handlers.JoinGroupHandler(db))
+	http.HandleFunc("/auth/register", handlers.AuthRegisterHandler(db))
+	http.HandleFunc("/auth/login", handlers.AuthLoginHandler(db))
+	http.HandleFunc("/subscriptions", handlers.SubscriptionsHandler(db))
+	http.HandleFunc("/subscriptions/", handlers.SubscriptionByIDHandler(db))
+	http.HandleFunc("/analytics", handlers.AnalyticsHandler(db))
+	http.HandleFunc("/profile", handlers.ProfileHandler(db))
+	http.HandleFunc("/groups", handlers.GroupsHandler(db))
+	http.HandleFunc("/groups/", handlers.GroupByIDHandler(db))
+	http.HandleFunc("/groups/join", handlers.JoinGroupHandler(db))
 
 	registerFrontendRoutes()
 
