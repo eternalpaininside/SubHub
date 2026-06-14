@@ -12,10 +12,17 @@ export const buildHomePageViewModel = ({ dashboard, groups, analytics }) => {
   const bars = Array.isArray(analytics?.bars)
     ? analytics.bars.map((bar) => ({ label: bar.label, amount: toAmount(bar.amount ?? bar.value) }))
     : [];
-  const previousBar = bars[bars.length - 2]?.amount || bars[bars.length - 1]?.amount || 0;
-  const lastBar = bars[bars.length - 1]?.amount || 0;
-  const trendPercent = previousBar ? Math.round(((lastBar - previousBar) / previousBar) * 100) : 0;
-  const trendDirection = trendPercent >= 0 ? 'up' : 'down';
+
+  const previousBar = bars[bars.length - 2]?.amount
+      || bars[bars.length - 1]?.amount
+      || 0;
+  const lastBar = bars[bars.length - 1]?.amount
+      || 0;
+  const trendPercent = previousBar
+      ? Math.round(((lastBar - previousBar) / previousBar) * 100)
+      : 0;
+  const trendDirection = trendPercent >= 0
+      ? 'up' : 'down';
 
   const categories = Array.isArray(analytics?.categories)
     ? analytics.categories
@@ -26,6 +33,7 @@ export const buildHomePageViewModel = ({ dashboard, groups, analytics }) => {
       }))
       .sort((left, right) => right.amount - left.amount)
     : [];
+
   const categoriesTotal = categories.reduce((sum, item) => sum + item.amount, 0);
   const topCategories = categories.slice(0, 3).map((category) => ({
     ...category,
@@ -43,8 +51,12 @@ export const buildHomePageViewModel = ({ dashboard, groups, analytics }) => {
     monthBudgetLabel: `${formatRubles(monthBudget)} ₽`,
     budgetProgress,
     trendDirection,
-    trendPercentLabel: `${trendPercent >= 0 ? '+' : ''}${trendPercent}%`,
-    trendLabel: trendPercent >= 0 ? 'рост к прошлому месяцу' : 'снижение к прошлому месяцу',
+    trendPercentLabel: `${trendPercent >= 0 
+        ? '+' 
+        : ''}${trendPercent}%`,
+    trendLabel: trendPercent >= 0
+        ? 'рост к прошлому месяцу'
+        : 'снижение к прошлому месяцу',
     topCategories
   };
 };

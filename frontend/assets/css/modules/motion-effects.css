@@ -4,21 +4,17 @@ body {
 
 .page-shell {
   opacity: 0;
-  transform: translateY(18px) scale(0.992);
-  transition: opacity 0.42s ease, transform 0.42s cubic-bezier(.22,1,.36,1);
+  transition: opacity 0.42s ease;
 }
 
 body.is-page-ready .page-shell {
   opacity: 1;
-  transform: translateY(0) scale(1);
 }
 
 body.is-page-exiting .page-shell {
   opacity: 0;
-  transform: translateY(20px) scale(0.988);
 }
 
-.topbar,
 .page-header,
 .dashboard-grid,
 .analytics-grid-top,
@@ -32,7 +28,6 @@ body.is-page-exiting .page-shell {
   transition: opacity 0.45s ease, transform 0.45s cubic-bezier(.22,1,.36,1);
 }
 
-body.is-page-ready .topbar,
 body.is-page-ready .page-header,
 body.is-page-ready .dashboard-grid,
 body.is-page-ready .analytics-grid-top,

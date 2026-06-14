@@ -12,7 +12,10 @@ const parseDaysLeft = (value) => {
 
 const getDaysLeftNumber = (subscription) => {
   const direct = Number(subscription.daysLeftNumber);
-  if (Number.isFinite(direct)) return direct;
+
+  if (Number.isFinite(direct))
+    return direct;
+
   return parseDaysLeft(subscription.daysLeft);
 };
 
@@ -22,9 +25,12 @@ const getNiceStep = (value) => {
   const base = 10 ** exponent;
   const fraction = safeValue / base;
 
-  if (fraction <= 1) return 1 * base;
-  if (fraction <= 2) return 2 * base;
-  if (fraction <= 5) return 5 * base;
+  if (fraction <= 1)
+    return base;
+  if (fraction <= 2)
+    return 2 * base;
+  if (fraction <= 5)
+    return 5 * base;
   return 10 * base;
 };
 
@@ -45,7 +51,9 @@ const describePieSlice = (cx, cy, radius, startAngle, endAngle) => {
 };
 
 const formatSubscriptionsPreview = (names) => {
-  if (!names.length) return 'Нет подписок';
+  if (!names.length)
+    return 'Нет подписок';
+
   const firstThree = names.slice(0, 3);
   const rest = names.length - firstThree.length;
   return rest > 0 ? `${firstThree.join(', ')}, ...+${rest}` : firstThree.join(', ');
@@ -61,15 +69,19 @@ export const buildAnalyticsPageViewModel = ({ analytics, subscriptions, profile,
     .map((category) => ({ ...category, amount: toNumber(category.value) }))
     .sort((left, right) => right.amount - left.amount);
   const totalCategoriesAmount = categoryTotals.reduce((sum, item) => sum + item.amount, 0);
-  const topCategory = categoryTotals[0] || { name: '—', amount: 0, color: '#bd5bff' };
+  const topCategory = categoryTotals[0] ||
+      { name: '—', amount: 0, color: '#bd5bff' };
   const topCategoryShare = totalCategoriesAmount
     ? Math.round((topCategory.amount / totalCategoriesAmount) * 100)
     : 0;
 
   const categorySubscriptions = subscriptions.reduce((accumulator, subscription) => {
     const key = String(subscription.category || '').trim().toLowerCase();
-    if (!key) return accumulator;
-    if (!accumulator.has(key)) accumulator.set(key, []);
+    if (!key)
+      return accumulator;
+    if (!accumulator.has(key))
+      accumulator.set(key, []);
+
     accumulator.get(key).push(subscription.name);
     return accumulator;
   }, new Map());
@@ -117,31 +129,52 @@ export const buildAnalyticsPageViewModel = ({ analytics, subscriptions, profile,
   const groupedTotal = subscriptionStats
     .filter((subscription) => String(subscription.planType).toLowerCase().includes('груп'))
     .reduce((sum, subscription) => sum + subscription.monthlyPrice, 0);
+
   const individualTotal = subscriptionStats
     .filter((subscription) => !String(subscription.planType).toLowerCase().includes('груп'))
     .reduce((sum, subscription) => sum + subscription.monthlyPrice, 0);
+
   const yearlyProjection = (groupedTotal + individualTotal) * 12;
   const currentMonthAmount = toNumber(analytics.month);
-  const previousBar = bars[bars.length - 2]?.amount ?? bars[bars.length - 1]?.amount ?? 0;
+  const previousBar = bars[bars.length - 2]?.amount
+      ?? bars[bars.length - 1]?.amount
+      ?? 0;
+
   const lastBar = currentMonthAmount;
-  const dynamicTrend = previousBar
+  const dynamicTrend = Number((previousBar
     ? ((lastBar - previousBar) / previousBar) * 100
-    : 0;
-  const spentYearToDate = bars.reduce((sum, bar) => sum + bar.amount, 0);
-  const monthsWithHistory = bars.filter((bar) => bar.amount > 0).length || bars.length || 1;
+    : 0).toFixed(1));
+
+  const spentYearToDate = bars.reduce((sum, bar) =>
+      sum + bar.amount, 0);
+  const monthsWithHistory = bars.filter((bar) =>
+      bar.amount > 0).length || bars.length || 1;
+
   const averagePerMonth = Math.round(spentYearToDate / monthsWithHistory);
-  const upcomingTotal = upcomingCharges.reduce((sum, subscription) => sum + subscription.monthlyPrice, 0);
+  const upcomingTotal = upcomingCharges.reduce((sum, subscription) =>
+      sum + subscription.monthlyPrice, 0);
+
   const nearestChargeDays = upcomingCharges[0]?.daysLeftNumber ?? null;
 
   const maxAmount = Math.max(...bars.map((bar) => bar.amount), 1);
   const userMaxBudget = toNumber(profile?.plan?.monthlyBudget);
-  const yTickSegments = userMaxBudget > 0 ? 5 : 4;
+  const yTickSegments = userMaxBudget > 0
+      ? 5 : 4;
+
   const autoStep = getNiceStep(maxAmount / yTickSegments);
   const autoMax = autoStep * yTickSegments;
-  const yMax = userMaxBudget > 0 ? Math.max(maxAmount, userMaxBudget) : autoMax;
-  const yStep = userMaxBudget > 0 ? yMax / yTickSegments : autoStep;
-  const yTicks = Array.from({ length: yTickSegments + 1 }, (_, index) => {
+
+  const yMax = userMaxBudget > 0
+      ? Math.max(maxAmount, userMaxBudget)
+      : autoMax;
+  const yStep = userMaxBudget > 0
+      ? yMax / yTickSegments
+      : autoStep;
+
+  const yTicks = Array.from({ length: yTickSegments + 1 },
+      (_, index) => {
     const value = yMax - index * yStep;
+
     return { label: `${formatRubles(value)} ₽` };
   });
 

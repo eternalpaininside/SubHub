@@ -28,7 +28,8 @@ const getHomeLoadIssue = (error) => {
     return {
       type: 'auth',
       title: 'Данные не загружены: нужен вход в аккаунт',
-      description: 'Главная страница показывает реальные подписки, расходы и группы только для авторизованного пользователя.',
+      description: 'Главная страница показывает реальные подписки, ' +
+          'расходы и группы только для авторизованного пользователя.',
       actionLabel: 'Открыть вход',
       actionClassName: 'primary-btn js-open-auth'
     };
@@ -38,7 +39,8 @@ const getHomeLoadIssue = (error) => {
     return {
       type: 'backend',
       title: 'Данные не загружены: backend недоступен',
-      description: `Фронтенд не смог получить ответ от API на ${API_BASE_URL}. Проверь, что Go-сервер запущен и адрес API настроен корректно.`,
+      description: `Фронтенд не смог получить ответ от API на ${API_BASE_URL}.
+       Проверь, что Go-сервер запущен и адрес API настроен корректно.`,
       actionLabel: 'Открыть профиль',
       actionClassName: 'ghost-btn'
     };
@@ -56,7 +58,7 @@ const getHomeLoadIssue = (error) => {
 const buildHomeLoadIssueMarkup = (issue) => {
   if (!issue) return '';
 
-  const actionHref = issue.type === 'auth' ? '' : 'profile.html';
+  const actionHref = issue.type === 'auth' ? '' : 'index.html';
   const actionMarkup = issue.type === 'auth'
     ? `<button class="${issue.actionClassName}" type="button">${issue.actionLabel}</button>`
     : `<a class="${issue.actionClassName}" href="${actionHref}">${issue.actionLabel}</a>`;
@@ -73,7 +75,8 @@ const buildHomeLoadIssueMarkup = (issue) => {
 
 const toggleSectionReveal = (section) => {
   const rect = section.getBoundingClientRect();
-  section.classList.toggle('is-visible', rect.top <= window.innerHeight * 0.9 && rect.bottom >= window.innerHeight * 0.15);
+  section.classList.toggle('is-visible', rect.top <= window.innerHeight * 0.9
+      && rect.bottom >= window.innerHeight * 0.15);
 };
 
 const initHomeScrollReveal = () => {
@@ -83,7 +86,8 @@ const initHomeScrollReveal = () => {
 
   const syncFoldOffset = () => {
     subscriptionsSection.style.marginTop = '0px';
-    const offset = Math.max(0, Math.ceil(window.innerHeight - heroGrid.getBoundingClientRect().bottom + 12));
+    const offset = Math.max(0,
+        Math.ceil(window.innerHeight - heroGrid.getBoundingClientRect().bottom + 12));
     subscriptionsSection.style.marginTop = `${offset}px`;
   };
 
@@ -93,7 +97,8 @@ const initHomeScrollReveal = () => {
   if ('IntersectionObserver' in window) {
     const observer = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        subscriptionsSection.classList.toggle('is-visible', entry.isIntersecting && entry.intersectionRatio > 0.1);
+        subscriptionsSection.classList.toggle('is-visible',
+            entry.isIntersecting && entry.intersectionRatio > 0.1);
       });
     }, { threshold: [0, 0.1, 0.2], rootMargin: '0px 0px -4% 0px' });
     observer.observe(subscriptionsSection);
@@ -120,10 +125,12 @@ const initHomeScrollHint = () => {
   };
 
   hint.addEventListener('click', () => {
-    window.scrollBy({ top: Math.max(window.innerHeight * 0.6, 360), behavior: 'smooth' });
+    window.scrollBy({ top: Math.max(window.innerHeight * 0.6, 360),
+      behavior: 'smooth' });
   });
 
-  ['scroll', 'resize'].forEach((eventName) => window.addEventListener(eventName, toggleHint, { passive: true }));
+  ['scroll', 'resize'].forEach((eventName) =>
+      window.addEventListener(eventName, toggleHint, { passive: true }));
   window.addEventListener('load', toggleHint, { once: true });
   toggleHint();
   requestAnimationFrame(toggleHint);

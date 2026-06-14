@@ -8,12 +8,17 @@ const getMonthlyPrice = (subscription) => {
 
 const parseDaysLeft = (value) => {
   const match = String(value || '').match(/\d+/);
-  return match ? Number(match[0]) : null;
+
+  return match
+      ? Number(match[0])
+      : null;
 };
 
 const getDaysLeftNumber = (subscription) => {
   const direct = Number(subscription.daysLeftNumber);
-  if (Number.isFinite(direct)) return direct;
+
+  if (Number.isFinite(direct))
+    return direct;
   return parseDaysLeft(subscription.daysLeft);
 };
 
@@ -21,6 +26,7 @@ export const buildDashboardViewModel = ({ subscriptions }) => {
   const monthExpenses = subscriptions.reduce((sum, subscription) => sum + getMonthlyPrice(subscription), 0);
   const expiringSoon = subscriptions.filter((subscription) => {
     const days = getDaysLeftNumber(subscription);
+
     return days !== null && days <= REMINDER_DAYS;
   }).length;
 
