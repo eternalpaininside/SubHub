@@ -16,6 +16,7 @@
       </option>
       <option name="myCustomValuesEnabled" value="true" />
     </inspection_tool>
+    <inspection_tool class="JSAnnotator" enabled="false" level="ERROR" enabled_by_default="false" />
     <inspection_tool class="SqlResolveInspection" enabled="true" level="ERROR" enabled_by_default="true">
       <option name="suppressForPossibleStringLiterals" value="true" />
     </inspection_tool>

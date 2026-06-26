@@ -14,6 +14,7 @@ export const getCurrentUser = () => {
 export const getCurrentUserId = () => {
   const user = getCurrentUser();
   const id = Number(user?.id);
+
   return Number.isFinite(id) && id > 0 ? id : null;
 };
 

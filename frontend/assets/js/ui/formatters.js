@@ -1,4 +1,5 @@
-export const formatRubles = (value) => new Intl.NumberFormat('ru-RU').format(Math.round(value));
+export const formatRubles = (value)
+    => new Intl.NumberFormat('ru-RU').format(Math.round(value));
 
 export const toNumber = (value) => Number(
   String(value ?? '')

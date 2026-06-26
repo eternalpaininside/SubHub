@@ -1,11 +1,11 @@
 import { escapeAttr } from './formatters.js';
 
 const buildFamilyMemberRow = (memberName) => {
-  const initial = memberName === 'Участников пока нет'
-    ? '•'
-    : (memberName.trim().charAt(0).toUpperCase() || '•');
+    const initial = memberName === 'Участников пока нет'
+        ? '•'
+        : (memberName.trim().charAt(0).toUpperCase() || '•');
 
-  return `
+    return `
     <div class="family-member">
       <span class="family-badge">${initial}</span>
       <span class="family-member-name">${memberName}</span>
@@ -14,16 +14,16 @@ const buildFamilyMemberRow = (memberName) => {
 };
 
 const buildFamilyGroupWindow = (group, index) => {
-  const members = Array.isArray(group.members) && group.members.length
-    ? group.members.map((member) => member.name || 'Участник')
-    : ['Участников пока нет'];
+    const members = Array.isArray(group.members) && group.members.length
+        ? group.members.map((member) => member.name || 'Участник')
+        : ['Участников пока нет'];
 
-  const membersList = members.map(buildFamilyMemberRow).join('');
-  const groupNotes = group.notes || (Array.isArray(group.members)
-    ? group.members.map((member) => member.name || '').filter(Boolean).join(', ')
-    : '');
+    const membersList = members.map(buildFamilyMemberRow).join('');
+    const groupNotes = group.notes || (Array.isArray(group.members)
+        ? group.members.map((member) => member.name || '').filter(Boolean).join(', ')
+        : '');
 
-  return `
+    return `
     <article class="family-group-window ${index === 0 ? 'is-active' : ''}" data-group-index="${index}">
       <div class="family-group-window-head">
         <div class="family-group-window-title">${group.name}</div>
@@ -48,7 +48,7 @@ const buildFamilyGroupWindow = (group, index) => {
 };
 
 export const buildHomeDashboardGrid = (home) => {
-  return `
+    return `
     <section class="dashboard-grid">
       <section class="subs-pair" aria-label="Активные и заканчивающиеся подписки">
         <article class="card subs-active-card">
@@ -109,47 +109,47 @@ export const buildHomeDashboardGrid = (home) => {
 };
 
 export const initFamilyGroupSlider = () => {
-  const slider = document.querySelector('[data-group-slider]');
-  if (!slider) return;
+    const slider = document.querySelector('[data-group-slider]');
+    if (!slider) return;
 
-  const windows = Array.from(slider.querySelectorAll('.family-group-window'));
-  if (!windows.length) return;
+    const windows = Array.from(slider.querySelectorAll('.family-group-window'));
+    if (!windows.length) return;
 
-  const navButtons = Array.from(slider.querySelectorAll('[data-group-nav]'));
-  const animationDuration = 340;
-  let activeIndex = Math.max(0, windows.findIndex((node) => node.classList.contains('is-active')));
-  let isAnimating = false;
+    const navButtons = Array.from(slider.querySelectorAll('[data-group-nav]'));
+    const animationDuration = 340;
+    let activeIndex = Math.max(0, windows.findIndex((node) => node.classList.contains('is-active')));
+    let isAnimating = false;
 
-  if (windows.length < 2) {
+    if (windows.length < 2) {
+        navButtons.forEach((button) => {
+            button.style.visibility = 'hidden';
+            button.setAttribute('aria-hidden', 'true');
+            button.tabIndex = -1;
+        });
+    }
+
+    const renderActiveWindow = () => {
+        windows.forEach((windowNode, index) => {
+            windowNode.classList.toggle('is-active', index === activeIndex);
+        });
+    };
+
     navButtons.forEach((button) => {
-      button.style.visibility = 'hidden';
-      button.setAttribute('aria-hidden', 'true');
-      button.tabIndex = -1;
+        button.addEventListener('click', () => {
+            if (isAnimating || windows.length < 2) return;
+            isAnimating = true;
+
+            activeIndex = button.dataset.groupNav === 'next'
+                ? (activeIndex + 1) % windows.length
+                : (activeIndex - 1 + windows.length) % windows.length;
+
+            renderActiveWindow();
+
+            window.setTimeout(() => {
+                isAnimating = false;
+            }, animationDuration);
+        });
     });
-  }
 
-  const renderActiveWindow = () => {
-    windows.forEach((windowNode, index) => {
-      windowNode.classList.toggle('is-active', index === activeIndex);
-    });
-  };
-
-  navButtons.forEach((button) => {
-    button.addEventListener('click', () => {
-      if (isAnimating || windows.length < 2) return;
-      isAnimating = true;
-
-      activeIndex = button.dataset.groupNav === 'next'
-        ? (activeIndex + 1) % windows.length
-        : (activeIndex - 1 + windows.length) % windows.length;
-
-      renderActiveWindow();
-
-      window.setTimeout(() => {
-        isAnimating = false;
-      }, animationDuration);
-    });
-  });
-
-  renderActiveWindow();
+    renderActiveWindow();
 };

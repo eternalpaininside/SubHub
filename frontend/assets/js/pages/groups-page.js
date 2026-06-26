@@ -4,14 +4,14 @@ import { buildLayout, initLayoutUI } from '../ui/app-layout.js';
 import { buildPageHeader } from '../ui/shared-page-sections.js';
 
 async function renderGroups() {
-  let groups = [];
-  try {
-    groups = await api.getGroups();
-  } catch {
-    groups = [];
-  }
+    let groups = [];
+    try {
+        groups = await api.getGroups();
+    } catch {
+        groups = [];
+    }
 
-  const content = `
+    const content = `
     <main>
       ${buildPageHeader({
         title: 'Группы',
@@ -22,17 +22,17 @@ async function renderGroups() {
             <button class="primary-btn js-open-add-group" type="button">＋ Создать группу</button>
           </div>
         `
-      })}
+    })}
 
       <section class="groups-stack">
-        ${groups.length ? groups.map(groupCard).join('') : 
-      '<article class="card">Пока нет групп. Создайте первую группу через кнопку сверху.</article>'}
+        ${groups.length ? groups.map(groupCard).join('') :
+        '<article class="card">Пока нет групп. Создайте первую группу через кнопку сверху.</article>'}
       </section>
     </main>
   `;
 
-  document.body.innerHTML = buildLayout('groups', content);
-  initLayoutUI();
+    document.body.innerHTML = buildLayout('groups', content);
+    initLayoutUI();
 }
 
 window.addEventListener('group:changed', renderGroups);

@@ -11,37 +11,37 @@ const renderProfileTile = (item) => `
 `;
 
 async function renderProfile() {
-  if (!isAuthenticated()) {
-    window.location.href = 'index.html';
-    return;
-  }
+    if (!isAuthenticated()) {
+        window.location.href = 'index.html';
+        return;
+    }
 
-  let data;
-  try {
-    data = await api.getProfile();
-  } catch {
-    window.location.href = 'index.html';
-    return;
-  }
+    let data;
+    try {
+        data = await api.getProfile();
+    } catch {
+        window.location.href = 'index.html';
+        return;
+    }
 
-  const profileTiles = [
-    { label: 'Email', value: data.user.email, tileClass: 'profile-tile-neutral' },
-    ...data.stats.map((item) =>
-        ({ ...item, tileClass: 'profile-tile-accent' }))
-  ];
+    const profileTiles = [
+        { label: 'Email', value: data.user.email, tileClass: 'profile-tile-neutral' },
+        ...data.stats.map((item) =>
+            ({ ...item, tileClass: 'profile-tile-accent' }))
+    ];
 
-  document.body.innerHTML = buildLayout('profile', `
+    document.body.innerHTML = buildLayout('profile', `
     <main>
       ${buildPageHeader({
         title: 'Профиль',
         subtitle: 'Основные данные аккаунта и сводная статистика',
         actionButtonMarkup: '<button class="primary-btn js-logout" type="button">Выйти из профиля</button>'
-      })}
+    })}
 
       <section class="list-stack">
         <article class="card profile-main-card">
           <div class="profile-main-head">
-            <img class="profile-main-photo" src="../assets/images/profile.svg" alt="Фото профиля" />
+            <img class="profile-main-photo" src="../assets/images/profile.svg" alt="Фото профиля"/>
             <div>
               <div class="profile-main-name">${data.user.name}</div>
               <div class="muted">${data.user.handle}</div>
@@ -53,7 +53,7 @@ async function renderProfile() {
     </main>
   `);
 
-  initLayoutUI();
+    initLayoutUI();
 }
 
 renderProfile();
