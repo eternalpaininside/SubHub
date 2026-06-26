@@ -1,5 +1,4 @@
 import { api } from '../api/backend-api-client.js';
-import { t } from '../ui/i18n.js';
 import { buildLayout, initLayoutUI } from '../ui/app-layout.js';
 import { buildPageHeader } from '../ui/shared-page-sections.js';
 import { isAuthenticated } from '../ui/session.js';
@@ -46,15 +45,6 @@ async function renderProfile() {
             <div>
               <div class="profile-main-name">${data.user.name}</div>
               <div class="muted">${data.user.handle}</div>
-            </div>
-            
-            <div class="profile-language-switcher">
-                <label for="languageSwitcher">${t('language_mode')}</label>
-                
-                <select id="languageSwitcher" class="language-select">
-                    <option value="ru">Русский</option>
-                    <option value="en">English</option>
-                </select>
             </div>
           </div>
           <div class="profile-summary-grid">${profileTiles.map(renderProfileTile).join('')}</div>

@@ -11,7 +11,7 @@ const renderAnalyticsPage = (title, subtitle, body) => `
 `;
 
 const renderLegend = (legend) => legend.length
-  ? legend.map((item) => `
+    ? legend.map((item) => `
     <div class="legend-item">
       <div class="legend-main">
         <div class="legend-left">
@@ -25,7 +25,7 @@ const renderLegend = (legend) => legend.length
       </div>
     </div>
   `).join('')
-  : '<div class="legend-empty">Пока нет данных по категориям</div>';
+    : '<div class="legend-empty">Пока нет данных по категориям</div>';
 
 const renderBarChart = (chart) => `
   <div class="bar-plot-wrap">
@@ -80,48 +80,48 @@ const renderFactCard = (title, body) => `
 `;
 
 const renderUpcomingCharges = (charges) => charges.length
-  ? charges.map((subscription) => `
+    ? charges.map((subscription) => `
     <div class="fact-list-row">
       <span>${subscription.name}</span>
       <strong>${subscription.daysLeftNumber} дн.</strong>
     </div>
   `).join('')
-  : '<div class="fact-muted">На этой неделе списаний нет</div>';
+    : '<div class="fact-muted">На этой неделе списаний нет</div>';
 
 const renderAnalyticsContent = (viewModel) => {
-  const topCards = [
-    {
-      badge: 'Неделя',
-      title: viewModel.topCards.week.title,
-      valueLabel: viewModel.topCards.week.valueLabel,
-      meta: [
-        { text: viewModel.topCards.week.primaryText },
-        { text: viewModel.topCards.week.secondaryText }
-      ]
-    },
-    {
-      badge: 'Месяц',
-      title: 'Расходы за месяц',
-      valueLabel: viewModel.topCards.month.valueLabel,
-      meta: [
-        { text: viewModel.topCards.month.trendText, className:
-              `analytics-kpi-meta-pill-trend ${viewModel.topCards.month.trendClass}` },
-        { text: viewModel.topCards.month.previousSpendText }
-      ]
-    },
-    {
-      badge: 'Год',
-      title: 'Расходы за год',
-      valueLabel: viewModel.topCards.year.valueLabel,
-      meta: [
-        { text: viewModel.topCards.year.averageText },
-        { text: viewModel.topCards.year.projectionText }
-      ]
-    }
-  ];
+    const topCards = [
+        {
+            badge: 'Неделя',
+            title: viewModel.topCards.week.title,
+            valueLabel: viewModel.topCards.week.valueLabel,
+            meta: [
+                { text: viewModel.topCards.week.primaryText },
+                { text: viewModel.topCards.week.secondaryText }
+            ]
+        },
+        {
+            badge: 'Месяц',
+            title: 'Расходы за месяц',
+            valueLabel: viewModel.topCards.month.valueLabel,
+            meta: [
+                { text: viewModel.topCards.month.trendText, className:
+                        `analytics-kpi-meta-pill-trend ${viewModel.topCards.month.trendClass}` },
+                { text: viewModel.topCards.month.previousSpendText }
+            ]
+        },
+        {
+            badge: 'Год',
+            title: 'Расходы за год',
+            valueLabel: viewModel.topCards.year.valueLabel,
+            meta: [
+                { text: viewModel.topCards.year.averageText },
+                { text: viewModel.topCards.year.projectionText }
+            ]
+        }
+    ];
 
-  const factCards = [
-    renderFactCard('Топ категория', `
+    const factCards = [
+        renderFactCard('Топ категория', `
       <div class="fact-title">${viewModel.facts.topCategory.name}</div>
       <div class="fact-value">${viewModel.facts.topCategory.amountLabel}</div>
       <div class="fact-muted">Доля в месячных расходах: ${viewModel.facts.topCategory.share}%</div>
@@ -129,7 +129,7 @@ const renderAnalyticsContent = (viewModel) => {
         <span style="width:${viewModel.facts.topCategory.progressWidth}%; background:${viewModel.facts.topCategory.color};"></span>
       </div>
     `),
-    renderFactCard('Самая дорогая подписка', `
+        renderFactCard('Самая дорогая подписка', `
       <div class="fact-title">${viewModel.facts.mostExpensiveSubscription.name}</div>
       <div class="fact-value">${viewModel.facts.mostExpensiveSubscription.priceLabel}</div>
       <div class="fact-tags">
@@ -137,9 +137,9 @@ const renderAnalyticsContent = (viewModel) => {
         <span class="fact-tag fact-tag-category">${viewModel.facts.mostExpensiveSubscription.category}</span>
       </div>
     `),
-    renderFactCard('Ближайшие списания',
-        `<div class="fact-list">${renderUpcomingCharges(viewModel.facts.upcomingCharges)}</div>`),
-    renderFactCard('Разбивка по тарифам', `
+        renderFactCard('Ближайшие списания',
+            `<div class="fact-list">${renderUpcomingCharges(viewModel.facts.upcomingCharges)}</div>`),
+        renderFactCard('Разбивка по тарифам', `
         <div class="fact-split">
           <div class="fact-split-row">
           <span>Групповые</span>
@@ -151,9 +151,9 @@ const renderAnalyticsContent = (viewModel) => {
         </div>
       </div>
     `)
-  ];
+    ];
 
-  return renderAnalyticsPage('Аналитика', 'Подробный анализ расходов', `
+    return renderAnalyticsPage('Аналитика', 'Подробный анализ расходов', `
     <section class="analytics-grid-top">
       ${topCards.map(renderKpiCard).join('')}
     </section>
@@ -170,7 +170,7 @@ const renderAnalyticsContent = (viewModel) => {
           <div class="ring-chart">
             <svg class="ring-svg" viewBox="0 0 120 120" aria-label="Категории расходов">
               ${viewModel.categoriesPie.segments.length
-                ? viewModel.categoriesPie.segments.map((segment) => `
+        ? viewModel.categoriesPie.segments.map((segment) => `
                   <path
                     class="ring-segment"
                     d="${segment.path}"
@@ -181,7 +181,7 @@ const renderAnalyticsContent = (viewModel) => {
                     data-subscriptions="${escapeAttr(segment.subscriptionsPreview)}"
                   ></path>
                 `).join('')
-                : '<circle cx="60" cy="60" r="52" fill="rgba(255,255,255,0.1)"></circle>'}
+        : '<circle cx="60" cy="60" r="52" fill="rgba(255,255,255,0.1)"></circle>'}
             </svg>
             <div class="ring-tooltip"></div>
           </div>
@@ -197,59 +197,59 @@ const renderAnalyticsContent = (viewModel) => {
 };
 
 const initRingChartTooltip = () => {
-  document.querySelectorAll('.ring-chart').forEach((chart) => {
-    const tooltip = chart.querySelector('.ring-tooltip');
-    const segments = chart.querySelectorAll('.ring-segment');
-    if (!tooltip || !segments.length) return;
+    document.querySelectorAll('.ring-chart').forEach((chart) => {
+        const tooltip = chart.querySelector('.ring-tooltip');
+        const segments = chart.querySelectorAll('.ring-segment');
+        if (!tooltip || !segments.length) return;
 
-    const setTooltipPosition = (event) => {
-      const rect = chart.getBoundingClientRect();
-      const tooltipWidth = tooltip.offsetWidth || 268;
-      const tooltipHeight = tooltip.offsetHeight || 120;
-      const halfWidth = tooltipWidth / 2;
-      const x = Math.min(Math.max(event.clientX - rect.left, halfWidth + 8),
-          rect.width - halfWidth - 8);
-      const y = Math.min(Math.max(event.clientY - rect.top - 14, tooltipHeight + 8),
-          rect.height - 8);
-      tooltip.style.left = `${x}px`;
-      tooltip.style.top = `${y}px`;
-    };
+        const setTooltipPosition = (event) => {
+            const rect = chart.getBoundingClientRect();
+            const tooltipWidth = tooltip.offsetWidth || 268;
+            const tooltipHeight = tooltip.offsetHeight || 120;
+            const halfWidth = tooltipWidth / 2;
+            const x = Math.min(Math.max(event.clientX - rect.left, halfWidth + 8),
+                rect.width - halfWidth - 8);
+            const y = Math.min(Math.max(event.clientY - rect.top - 14, tooltipHeight + 8),
+                rect.height - 8);
+            tooltip.style.left = `${x}px`;
+            tooltip.style.top = `${y}px`;
+        };
 
-    const hideTooltip = () => {
-      tooltip.classList.remove('is-visible');
-    };
+        const hideTooltip = () => {
+            tooltip.classList.remove('is-visible');
+        };
 
-    segments.forEach((segment) => {
-      const showTooltip = (event) => {
-        tooltip.textContent = `${segment.dataset.name || '—'}: ${segment.dataset.amount || '0'} • ${segment.dataset.share || '0'}%\n
+        segments.forEach((segment) => {
+            const showTooltip = (event) => {
+                tooltip.textContent = `${segment.dataset.name || '—'}: ${segment.dataset.amount || '0'} • ${segment.dataset.share || '0'}%\n
         Подписки: ${segment.dataset.subscriptions || 'Нет подписок'}`;
-        setTooltipPosition(event);
-        tooltip.classList.add('is-visible');
-      };
+                setTooltipPosition(event);
+                tooltip.classList.add('is-visible');
+            };
 
-      segment.addEventListener('mouseenter', showTooltip);
-      segment.addEventListener('mousemove', showTooltip);
-      segment.addEventListener('mouseleave', hideTooltip);
+            segment.addEventListener('mouseenter', showTooltip);
+            segment.addEventListener('mousemove', showTooltip);
+            segment.addEventListener('mouseleave', hideTooltip);
+        });
+
+        chart.addEventListener('mouseleave', hideTooltip);
     });
-
-    chart.addEventListener('mouseleave', hideTooltip);
-  });
 };
 
 async function renderAnalytics() {
-  try {
-    const viewModel = await api.getAnalyticsPage();
-    document.body.innerHTML = buildLayout('analytics', renderAnalyticsContent(viewModel));
-    initLayoutUI();
-    initRingChartTooltip();
-  } catch (error) {
-    document.body.innerHTML = buildLayout('analytics', renderAnalyticsPage(
-      'Аналитика',
-      'Живые данные появятся после входа в аккаунт',
-      `<section class="list-stack"><article class="card">${error.message || 'Не удалось загрузить аналитику.'}</article></section>`
-    ));
-    initLayoutUI();
-  }
+    try {
+        const viewModel = await api.getAnalyticsPage();
+        document.body.innerHTML = buildLayout('analytics', renderAnalyticsContent(viewModel));
+        initLayoutUI();
+        initRingChartTooltip();
+    } catch (error) {
+        document.body.innerHTML = buildLayout('analytics', renderAnalyticsPage(
+            'Аналитика',
+            'Живые данные появятся после входа в аккаунт',
+            `<section class="list-stack"><article class="card">${error.message || 'Не удалось загрузить аналитику.'}</article></section>`
+        ));
+        initLayoutUI();
+    }
 }
 
 renderAnalytics();

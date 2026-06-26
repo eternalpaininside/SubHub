@@ -55,16 +55,21 @@ const getVisibleModalAnchor = () => {
 
 const getFocusedFieldAnchor = () => {
   const activeElement = document.activeElement;
-  if (!activeElement) return null;
+  if (!activeElement)
+    return null;
 
   if (activeElement.id && fieldHelpAnchors[activeElement.id]) {
     return fieldHelpAnchors[activeElement.id];
   }
 
-  if (activeElement.dataset?.editSubscriptionField) return 'subscription-edit';
+  if (activeElement.dataset?.editSubscriptionField)
+    return 'subscription-edit';
 
-  const checkboxList = activeElement.closest?.('#group-subscription-ids, #group-edit-subscription-ids');
-  if (checkboxList?.id) return fieldHelpAnchors[checkboxList.id] || null;
+  const checkboxList = activeElement.closest?.
+    ('#group-subscription-ids, #group-edit-subscription-ids');
+
+  if (checkboxList?.id)
+    return fieldHelpAnchors[checkboxList.id] || null;
 
   return null;
 };
@@ -85,11 +90,13 @@ export function initHelpSystem() {
     button.addEventListener('click', () => openHelp('overview'));
   });
 
-  if (isKeyboardHelpBound) return;
+  if (isKeyboardHelpBound)
+    return;
   isKeyboardHelpBound = true;
 
   window.addEventListener('keydown', (event) => {
-    if (event.key !== 'F1') return;
+    if (event.key !== 'F1')
+      return;
     event.preventDefault();
     openHelp(resolveContextAnchor());
   });
