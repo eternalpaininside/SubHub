@@ -22,7 +22,9 @@
 - `POST /auth/register`
 - `POST /auth/login`
 - `POST /subscriptions`
-- `PUT /subscriptions/{subscriptions_id}`
-- `DELETE /subscriptions/{subscriptions_id}`
-- `POST /groups`
 - `POST /groups/join`
+- `POST /groups`
+- `PUT /subscriptions/{subscriptions_id}`
+- `PUT /groups/{group_id}`
+- `DELETE /subscriptions/{subscriptions_id}`
+- `DELETE /groups/{group_id}`
