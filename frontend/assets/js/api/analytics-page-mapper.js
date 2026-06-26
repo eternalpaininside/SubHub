@@ -131,15 +131,7 @@ export const buildAnalyticsPageViewModel = ({ analytics, subscriptions, profile,
         .sort((left, right) => left.daysLeftNumber - right.daysLeftNumber)
         .slice(0, 4);
 
-    const groupedTotal = subscriptionStats
-        .filter((subscription) => String(subscription.planType).toLowerCase().includes('груп'))
-        .reduce((sum, subscription) => sum + subscription.monthlyPrice, 0);
 
-    const individualTotal = subscriptionStats
-        .filter((subscription) => !String(subscription.planType).toLowerCase().includes('груп'))
-        .reduce((sum, subscription) => sum + subscription.monthlyPrice, 0);
-
-    const yearlyProjection = (groupedTotal + individualTotal) * 12;
     const currentMonthAmount = toNumber(analytics.month);
     const previousBar = bars[bars.length - 2]?.amount
         ?? bars[bars.length - 1]?.amount
@@ -153,6 +145,16 @@ export const buildAnalyticsPageViewModel = ({ analytics, subscriptions, profile,
         sum + bar.amount, 0);
     const monthsWithHistory = bars.filter((bar) =>
         bar.amount > 0).length || bars.length || 1;
+
+    const groupedTotal = subscriptionStats
+        .filter((subscription) => String(subscription.planType).toLowerCase().includes('груп'))
+        .reduce((sum, subscription) => sum + subscription.monthlyPrice, 0);
+
+    const individualTotal = subscriptionStats
+        .filter((subscription) => (!(String(subscription.planType).toLowerCase().includes('груп'))))
+        .reduce((sum, subscription) => sum + subscription.monthlyPrice, 0);
+
+    const yearlyProjection = spentYearToDate + (groupedTotal + individualTotal) * 6;
 
     const averagePerMonth = Math.round(spentYearToDate / monthsWithHistory);
     const upcomingTotal = upcomingCharges.reduce((sum, subscription) =>

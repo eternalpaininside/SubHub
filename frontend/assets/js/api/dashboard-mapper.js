@@ -3,6 +3,7 @@ import { REMINDER_DAYS } from '../ui/constants.js';
 
 const getMonthlyPrice = (subscription) => {
     const price = Number(subscription.price) || 0;
+
     return subscription.period === 'год' ? price / 12 : price;
 };
 

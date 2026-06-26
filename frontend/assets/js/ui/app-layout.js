@@ -1,22 +1,17 @@
 import { api } from '../api/backend-api-client.js';
-import { STORAGE_KEYS } from './constants.js';
-import { t } from './i18n.js';
+import { STORAGE_KEYS, subscriptionCategories, commonPeriods, planTypes, groupTypes, fieldFullClass } from './constants.js';
 import { clearCurrentUser, getCurrentUser, isAuthenticated, setCurrentUser } from './session.js';
 import { createModalManager } from './modal-manager.js';
 import { editContextStore } from './ui-store.js';
 import { initHelpSystem } from './help-system.js';
 
-const subscriptionCategories = ['Стриминг', 'Музыка', 'Облако', 'Продуктивность', 'AI', 'Комплекс'];
-const commonPeriods = ['мес', 'год'];
-const planTypes = ['Индивидуальный', 'Групповой'];
-const groupTypes = ['Семейная', 'Друзья', 'Команда'];
-const fieldFullClass = 'field-label field-full';
+
 const subscriptionFieldSelector = (field) => `[data-edit-subscription-field="${field}"]`;
 
 const navItems = [
-    { href: 'index.html', labelKey: 'nav_home', key: 'home' },
-    { href: 'analytics.html', labelKey: 'nav_analytics', key: 'analytics' },
-    { href: 'groups.html', labelKey: 'nav_groups', key: 'groups' }
+    { href: 'index.html', labelName: 'Главная', key: 'home' },
+    { href: 'analytics.html', labelName: 'Аналитика', key: 'analytics' },
+    { href: 'groups.html', labelName: 'Группы', key: 'groups' }
 ];
 
 const authModes = {
@@ -25,9 +20,9 @@ const authModes = {
         subtitleKey: 'auth_login_subtitle',
         submitKey: 'button_login',
         fields: [
-            { id: 'login-email', label: t('label_email'),
+            { id: 'login-email', label: 'Email',
                 type: 'email', placeholder: 'you@example.com' },
-            { id: 'login-password', label: t('label_password'),
+            { id: 'login-password', label: 'Пароль',
                 type: 'password', placeholder: 'Введите пароль' }
         ]
     },
@@ -36,11 +31,11 @@ const authModes = {
         subtitleKey: 'auth_register_subtitle',
         submitKey: 'button_register',
         fields: [
-            { id: 'register-name', label: t('label_name'),
+            { id: 'register-name', label: 'Имя',
                 placeholder: 'Ваше имя' },
-            { id: 'register-email', label: t('label_email'),
+            { id: 'register-email', label: 'Email',
                 type: 'email', placeholder: 'you@example.com' },
-            { id: 'register-password', label: t('label_password'),
+            { id: 'register-password', label: 'Пароль',
                 type: 'password', placeholder: 'Придумайте пароль' }
         ]
     }
@@ -143,18 +138,18 @@ const renderAuthModal = () => `
     <div class="modal-card auth-modal-card">
       <button class="modal-close js-close-modal" type="button" aria-label="Закрыть">×</button>
       <div class="auth-switcher">
-        <button class="auth-tab is-active" type="button" data-auth-tab="login">${t('auth_login_tab')}</button>
-        <button class="auth-tab" type="button" data-auth-tab="register">${t('auth_register_tab')}</button>
+        <button class="auth-tab is-active" type="button" data-auth-tab="login">Вход</button>
+        <button class="auth-tab" type="button" data-auth-tab="register">Регистрация</button>
       </div>
       ${Object.entries(authModes).map(([mode, config], index) => `
         <div class="auth-panel ${index === 0 ? 'is-active' : ''}" data-auth-panel="${mode}">
-          <h2 class="modal-title">${t(config.titleKey)}</h2>
-          <p class="modal-subtitle">${t(config.subtitleKey)}</p>
+          <h2 class="modal-title">Вход в аккаунт</h2>
+          <p class="modal-subtitle">Введите корректные данные ниже для входа.</p>
           <form class="modal-form" id="${mode}-form">
             ${config.fields.map(renderField).join('')}
             <button class="primary-btn modal-submit" 
             type="button" 
-            data-auth-submit="${mode}">${t(config.submitKey)}</button>
+            data-auth-submit="${mode}">Войти</button>
           </form>
         </div>
       `).join('')}
@@ -168,11 +163,11 @@ const renderLayoutHeader = (activePage) => {
     return `
     <header class="topbar">
       <div class="branding">
-        <a class="logo" href="index.html">${t('brand')}</a>
+        <a class="logo" href="index.html">SubHub</a>
         <nav class="nav">
           ${navItems.map((item) => `
             <a class="nav-link${item.key === activePage ? 'is-active' : ''}" 
-            href="${item.href}">${t(item.labelKey)}</a>
+            href="${item.href}">${item.labelName}</a>
           `).join('')}
         </nav>
       </div>
@@ -180,7 +175,7 @@ const renderLayoutHeader = (activePage) => {
         <button class="help-button js-open-help ${activePage === 'help' ? 'is-active' : ''}" 
         type="button">Помощь</button>
         <button class="profile-chip ${activePage === 'profile' ? 'is-active' : ''}" 
-        type="button" aria-label="${t('auth_open_profile')}">
+        type="button" aria-label="Открыть профиль или окно входа и регистрации">
           <img class="profile-photo" 
           src="../assets/images/profile.svg" 
           alt="Фото профиля"
@@ -300,12 +295,14 @@ export function buildLayout(activePage, content) {
 
 const setFieldValue = (modal, selector, value) => {
     const field = modal?.querySelector(selector);
-    if (field && value !== undefined) field.value = String(value);
+    if (field && value !== undefined)
+        field.value = String(value);
 };
 
 const applySelectValue = (modal, selector, value, fallback) => {
     const select = modal?.querySelector(selector);
-    if (!select) return;
+    if (!select)
+        return;
 
     const normalizedValue = String(value || fallback || '');
     const hasOption = Array.from(select.options).some((option) => option.value === normalizedValue);
@@ -314,7 +311,8 @@ const applySelectValue = (modal, selector, value, fallback) => {
 
 const updateHeaderProfileLabel = () => {
     const label = document.querySelector('.profile-chip span');
-    if (label) label.textContent = getCurrentUser()?.name || 'Войти';
+    if (label)
+        label.textContent = getCurrentUser()?.name || 'Войти';
 };
 
 const isForcedAuthActive = () =>
@@ -392,7 +390,8 @@ const initAddSubscriptionForm = (modalManager) => {
             return;
 
         const payload = buildSubscriptionPayloadFromModal();
-        if (!validateSubscriptionPayload(payload, 'Заполните все обязательные поля корректно.')) return;
+        if (!validateSubscriptionPayload(payload, 'Заполните все обязательные поля корректно.'))
+            return;
 
         try {
             await api.createSubscription(payload);
@@ -566,7 +565,9 @@ const enablePageMotion = () => {
 
     document.querySelectorAll('a[href]').forEach((link) => {
         const href = link.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('http') || link.target === '_blank')
+        if (!href || href.startsWith('#')
+            || href.startsWith('http')
+            || link.target === '_blank')
             return;
 
         link.addEventListener('click', (event) => {
@@ -613,7 +614,9 @@ const initAuthActions = (modalManager) => {
             const mode = button.dataset.authSubmit;
 
             try {
-                const response = await api[mode === 'register' ? 'register' : 'login'](getAuthPayload(mode));
+                const response = await api[mode === 'register'
+                    ? 'register'
+                    : 'login'](getAuthPayload(mode));
                 setCurrentUser(response.user);
                 setForcedAuthState(false);
                 const authModal = modalManager.getModal('auth-modal');

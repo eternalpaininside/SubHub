@@ -51,7 +51,7 @@ const renderBarChart = (chart) => `
       `).join('')}
     </div>
   </div>
-  <div class="bar-months" style="grid-template-columns:repeat(${chart.bars.length},minmax(0,1fr));">
+  <div class="bar-months" style="grid-template-columns:repeat(${chart.bars.length}, minmax(0,1fr));">
     ${chart.bars.map((bar) => `<div class="bar-label">${bar.label}</div>`).join('')}
   </div>
 `;
@@ -65,7 +65,7 @@ const renderKpiCard = ({ badge, title, valueLabel, meta }) => `
     <div class="metric-value analytics-kpi-value">${valueLabel}</div>
     <div class="analytics-kpi-meta-row">
       ${meta.map((item) =>
-    `<span class="analytics-kpi-meta-pill${item.className ?
+    `<span class="analytics-kpi-meta-pill ${item.className ?
         `${item.className}` : ''}">${item.text}</span>`)
     .join('')}
     </div>

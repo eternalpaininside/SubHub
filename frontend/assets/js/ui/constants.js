@@ -17,3 +17,9 @@ export const SUBSCRIPTION_FILTERS = [
 ];
 
 export const REMINDER_DAYS = 7;
+
+export const subscriptionCategories = ['Стриминг', 'Музыка', 'Облако', 'Продуктивность', 'AI', 'Комплекс'];
+export const commonPeriods = ['мес', 'год'];
+export const planTypes = ['Индивидуальный', 'Групповой'];
+export const groupTypes = ['Семейная', 'Друзья', 'Команда'];
+export const fieldFullClass = 'field-label field-full';
