@@ -15,7 +15,8 @@ const translations = {
     label_email: 'Email',
     label_password: 'Пароль',
     button_login: 'Войти',
-    button_register: 'Создать аккаунт'
+    button_register: 'Создать аккаунт',
+    language_mode: 'Выберите язык'
   },
   en: {
     brand: 'SubHub',
@@ -33,8 +34,41 @@ const translations = {
     label_email: 'Email',
     label_password: 'Password',
     button_login: 'Sign in',
-    button_register: 'Create account'
+    button_register: 'Create account',
+    language_mode: 'Select language'
   }
 };
 
-export const t = (key) => translations.ru[key] || key;
+function setLanguage(lang) {
+  localStorage.setItem('lang', lang);
+  document.querySelectorAll('[data-lang]').forEach((el) => {
+    const key = el.getAttribute('data-lang');
+
+    if (translations[lang][key]) {
+      el.textContent = translations[lang][key];
+    }
+  });
+
+  const languageSelect = document.getElementById('language-select');
+  if (languageSelect) {
+    languageSelect.value = lang;
+  }
+}
+
+const savedLanguage = localStorage.getItem('lang') || 'ru';
+
+function initLanguage() {
+
+  setLanguage(savedLanguage);
+
+  const languageSelect = document.getElementById('language-select');
+  if (languageSelect) {
+    languageSelect.addEventListener('change', (event) => {
+      setLanguage(event.target.value);
+    });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', initLanguage);
+
+export const t = (key) => translations[savedLanguage][key] || key;
